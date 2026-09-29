@@ -55,6 +55,8 @@ Docker:
 docker compose up --build
 ```
 
+Compose reads the root `.env` automatically for `AI_PROVIDER`, `AI_BASE_URL`, `AI_API_KEY`, and `AI_MODEL`; the database is always stored in the named container volume at `/app/runtime`. To avoid using host port 8000, set `SURFACE_MAP_PORT=8010` in `.env` or run `SURFACE_MAP_PORT=8010 docker compose up --build`. The image runs as a non-root user, drops Linux capabilities, uses a read-only filesystem except for the database volume, and exposes a healthcheck at `/api/health`. Before starting anything, validate the generated configuration with `docker compose config`.
+
 RDAP enrichment is opt-in because it makes public network requests. Set `ENABLE_RDAP=true` when you want IP/domain RDAP, ASN, registrar, and hosting enrichment; the collector records failures and never treats the result as ownership proof.
 
 ## AI configuration
