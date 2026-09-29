@@ -7,12 +7,12 @@ from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
-from .db import db_session, get_project, init_db, list_projects, rows
+from .db import db_session, get_project, init_db, list_projects, rows, now_iso
 from .normalize import normalize_domain
 from .pipeline import project_snapshot, run_collection
 from .report import report_html, report_json
 from .sample_data import load_demo
-from .schemas import CollectRequest, ProjectCreate
+from .schemas import ClaimReview, CollectRequest, ProjectCreate
 from .scope import host_from_url, is_host_allowed
 
 
@@ -54,7 +54,7 @@ def create_project(payload: ProjectCreate) -> dict:
     with db_session() as db:
         from .db import create_project
 
-        return create_project(db, {"organization_name": payload.organization_name.strip(), "official_website": payload.official_website.strip(), "root_domain": root_domain, "allowed_domains": allowed, "mode": payload.mode, "notes": payload.notes.strip()})
+        return create_project(db, {"organization_name": payload.organization_name.strip(), "official_website": payload.official_website.strip(), "root_domain": root_domain, "allowed_domains": allowed, "aliases": payload.aliases, "brands": payload.brands, "known_social_accounts": payload.known_social_accounts, "authorized_assets": payload.authorized_assets, "mode": payload.mode, "notes": payload.notes.strip()})
 
 
 @app.get("/api/projects/{project_id}")
@@ -77,6 +77,17 @@ def collect(project_id: str, payload: CollectRequest) -> dict:
 @app.post("/api/demo/load")
 def demo_load() -> dict:
     return load_demo()
+
+
+@app.get("/api/projects/{project_id}/social")
+def social(project_id: str) -> dict:
+    with db_session() as db:
+        if not get_project(db, project_id):
+            raise HTTPException(status_code=404, detail="project not found")
+        accounts = rows(db.execute("SELECT a.*, s.source_url, s.source_name FROM social_accounts a LEFT JOIN sources s ON s.id=a.source_id WHERE a.project_id=? ORDER BY a.platform, a.profile_url", (project_id,)))
+        posts = rows(db.execute("SELECT p.*, a.platform, a.profile_url, s.source_url AS source_url FROM social_posts p LEFT JOIN social_accounts a ON a.id=p.social_account_id LEFT JOIN sources s ON s.id=p.source_id WHERE p.project_id=? ORDER BY p.collected_at DESC", (project_id,)))
+        brands = rows(db.execute("SELECT * FROM brands WHERE project_id=? ORDER BY name", (project_id,)))
+        return {"brands": brands, "accounts": accounts, "posts": posts}
 
 
 @app.get("/api/projects/{project_id}/assets")
@@ -112,6 +123,8 @@ def relationships(project_id: str) -> list[dict]:
         raise HTTPException(status_code=404, detail="project not found")
     labels = {f"entity:{item['id']}": item["display_name"] for item in snapshot["entities"]}
     labels.update({f"asset:{item['id']}": item["display_value"] for item in snapshot["assets"]})
+    labels.update({f"social_account:{item['id']}": f"{item['platform']}: {item['profile_url']}" for item in snapshot["social_accounts"]})
+    labels.update({f"social_post:{item['id']}": item["permalink"] for item in snapshot["social_posts"]})
     for rel in snapshot["relationships"]:
         rel["subject_label"] = labels.get(f"{rel['subject_type']}:{rel['subject_id']}", rel["subject_id"])
         rel["object_label"] = labels.get(f"{rel['object_type']}:{rel['object_id']}", rel["object_id"])
@@ -126,6 +139,8 @@ def graph(project_id: str) -> dict:
         raise HTTPException(status_code=404, detail="project not found")
     nodes = [{"id": f"entity:{item['id']}", "label": item["display_name"], "kind": item["entity_type"], "status": item["status"]} for item in snapshot["entities"]]
     nodes += [{"id": f"asset:{item['id']}", "label": item["display_value"], "kind": item["asset_type"], "status": item["status"]} for item in snapshot["assets"]]
+    nodes += [{"id": f"social_account:{item['id']}", "label": item["profile_url"], "kind": f"social:{item['platform']}", "status": item["verification_status"]} for item in snapshot["social_accounts"]]
+    nodes += [{"id": f"social_post:{item['id']}", "label": item["permalink"], "kind": "social_post", "status": "related"} for item in snapshot["social_posts"]]
     edges = [{"id": rel["id"], "source": f"{rel['subject_type']}:{rel['subject_id']}", "target": f"{rel['object_type']}:{rel['object_id']}", "label": rel["predicate"], "status": rel["status"], "confidence": rel["confidence"]} for rel in snapshot["relationships"]]
     return {"nodes": nodes, "edges": edges}
 
@@ -137,6 +152,17 @@ def claim(project_id: str, relationship_id: str) -> dict:
             FROM relationships r LEFT JOIN evidence e ON e.id=r.evidence_id LEFT JOIN sources s ON s.id=e.source_id WHERE r.project_id=? AND r.id=?""", (project_id, relationship_id)).fetchone()
         if not row:
             raise HTTPException(status_code=404, detail="relationship not found")
+        return dict(row)
+
+
+@app.patch("/api/projects/{project_id}/claims/{relationship_id}")
+def review_claim(project_id: str, relationship_id: str, payload: ClaimReview) -> dict:
+    with db_session() as db:
+        existing = db.execute("SELECT id FROM relationships WHERE project_id=? AND id=?", (project_id, relationship_id)).fetchone()
+        if not existing:
+            raise HTTPException(status_code=404, detail="relationship not found")
+        db.execute("UPDATE relationships SET status=?, rationale=COALESCE(?, rationale), verified_by='human_review', reviewed_at=? WHERE project_id=? AND id=?", (payload.status, payload.rationale, now_iso(), project_id, relationship_id))
+        row = db.execute("SELECT * FROM relationships WHERE project_id=? AND id=?", (project_id, relationship_id)).fetchone()
         return dict(row)
 
 

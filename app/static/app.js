@@ -28,6 +28,7 @@ async function loadProject(projectId) {
   $('jsonLink').href = `/api/projects/${projectId}/report.json`; $('htmlLink').href = `/api/projects/${projectId}/report.html`;
   $('assetType').innerHTML = '<option value="">All types</option>' + [...new Set(state.project.assets.map(a => a.asset_type))].sort().map(t => `<option>${escapeHtml(t)}</option>`).join('');
   renderStats(); renderAssets(); renderRelationships(); renderGraph();
+  renderSocial(); renderCollectorLogs();
   await refreshProjects(projectId);
 }
 
@@ -37,6 +38,16 @@ function renderStats() {
   $('stats').innerHTML = cards.map(([label, value]) => `<div class="stat"><b>${value}</b><span>${label}</span></div>`).join('');
 }
 
+function renderSocial() {
+  const accounts = state.project.social_accounts || [];
+  $('socialRows').innerHTML = accounts.map(a => `<tr><td>${escapeHtml(a.platform)}</td><td><a href="${escapeHtml(a.profile_url)}" target="_blank" rel="noreferrer">${escapeHtml(a.profile_url)}</a></td><td>${badge(a.verification_status)}</td><td>${escapeHtml(a.verification_reason)}</td></tr>`).join('') || '<tr><td colspan="4" class="muted">No social records. Add a public URL or manual export when creating a project.</td></tr>';
+}
+
+function renderCollectorLogs() {
+  const logs = state.project.collector_logs || [];
+  $('collectorRows').innerHTML = logs.map(l => `<tr><td>${escapeHtml(l.collector)}</td><td>${badge(l.status === 'ok' ? 'confirmed' : l.status === 'error' ? 'needs_review' : 'discovered')}</td><td>${l.records_count}</td><td>${l.duration_ms} ms</td><td>${escapeHtml(l.message)}</td></tr>`).join('') || '<tr><td colspan="5" class="muted">No collection run yet.</td></tr>';
+}
+
 function renderAssets() {
   const q = $('assetSearch').value.toLowerCase(), type = $('assetType').value, status = $('assetStatus').value;
   const items = state.project.assets.filter(a => (!q || `${a.display_value} ${a.canonical_value}`.toLowerCase().includes(q)) && (!type || a.asset_type === type) && (!status || a.status === status));
@@ -44,15 +55,21 @@ function renderAssets() {
 }
 
 function renderRelationships() {
-  $('relationshipRows').innerHTML = state.relationships.map(r => `<tr data-claim="${r.id}" class="claimRow"><td>${escapeHtml(r.subject_label)}</td><td>${escapeHtml(r.predicate)}</td><td>${escapeHtml(r.object_label)}</td><td>${badge(r.status)}</td><td>${(r.confidence * 100).toFixed(0)}%</td><td>${r.source_url ? escapeHtml(r.source_url) : '<span class="muted">No source</span>'}</td></tr>`).join('') || '<tr><td colspan="6" class="muted">No relationships yet.</td></tr>';
+  $('relationshipRows').innerHTML = state.relationships.map(r => `<tr data-claim="${r.id}" class="claimRow"><td>${escapeHtml(r.subject_label)}</td><td>${escapeHtml(r.predicate)}</td><td>${escapeHtml(r.object_label)}</td><td>${escapeHtml(r.relation_class || 'unknown')}</td><td>${badge(r.status)}</td><td>${(r.confidence * 100).toFixed(0)}%</td><td>${r.source_url ? escapeHtml(r.source_url) : '<span class="muted">No source</span>'}</td></tr>`).join('') || '<tr><td colspan="7" class="muted">No relationships yet.</td></tr>';
   document.querySelectorAll('.claimRow').forEach(row => row.onclick = () => showClaim(row.dataset.claim));
 }
 
 async function showClaim(id) {
   const claim = await api(`/api/projects/${state.project.project.id}/claims/${id}`);
   $('claimPanel').hidden = false;
-  $('claimContent').innerHTML = `<dl><dt>Status</dt><dd>${badge(claim.status)}</dd><dt>Predicate</dt><dd>${escapeHtml(claim.predicate)}</dd><dt>Confidence</dt><dd>${(claim.confidence * 100).toFixed(0)}%</dd><dt>Source</dt><dd>${claim.source_url ? `<a href="${escapeHtml(claim.source_url)}" target="_blank" rel="noreferrer">${escapeHtml(claim.source_url)}</a>` : 'none'}</dd><dt>Collected</dt><dd>${escapeHtml(claim.source_collected_at || claim.evidence_collected_at || '')}</dd></dl><blockquote>${escapeHtml(claim.quote || 'No valid evidence quote; review required.')}</blockquote><p>${escapeHtml(claim.rationale || '')}</p>`;
+  $('claimContent').innerHTML = `<dl><dt>Status</dt><dd>${badge(claim.status)}</dd><dt>Class</dt><dd>${escapeHtml(claim.relation_class || 'unknown')}</dd><dt>Predicate</dt><dd>${escapeHtml(claim.predicate)}</dd><dt>Confidence</dt><dd>${(claim.confidence * 100).toFixed(0)}%</dd><dt>Source</dt><dd>${claim.source_url ? `<a href="${escapeHtml(claim.source_url)}" target="_blank" rel="noreferrer">${escapeHtml(claim.source_url)}</a>` : 'none'}</dd><dt>Collected</dt><dd>${escapeHtml(claim.source_collected_at || claim.evidence_collected_at || '')}</dd></dl><blockquote>${escapeHtml(claim.quote || 'No valid evidence quote; review required.')}</blockquote><p>${escapeHtml(claim.rationale || '')}</p><div class="actions"><button class="primary" onclick="reviewClaim('${claim.id}','confirmed')">Confirm</button><button class="secondary" onclick="reviewClaim('${claim.id}','needs_review')">Needs review</button><button class="secondary" onclick="reviewClaim('${claim.id}','rejected')">Reject</button></div>`;
   $('claimPanel').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+async function reviewClaim(id, status) {
+  await api(`/api/projects/${state.project.project.id}/claims/${id}`, {method:'PATCH', headers:{'Content-Type':'application/json'}, body:JSON.stringify({status})});
+  await loadProject(state.project.project.id);
+  await showClaim(id);
 }
 
 function renderGraph() {
@@ -68,8 +85,8 @@ async function loadDemo() { const result = await api('/api/demo/load', {method:'
 
 $('demoBtn').onclick = () => loadDemo().catch(showError);
 $('newProjectBtn').onclick = () => $('projectDialog').showModal();
-$('projectForm').onsubmit = async (event) => { event.preventDefault(); const form = new FormData(event.target); const payload = Object.fromEntries(form.entries()); payload.allowed_domains = payload.allowed_domains.split(',').map(v => v.trim()).filter(Boolean); try { const created = await api('/api/projects', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)}); $('projectDialog').close(); await loadProject(created.id); } catch (error) { showError(error); } };
-$('collectBtn').onclick = async () => { if (!state.project) return; $('collectBtn').disabled=true; try { const result = await api(`/api/projects/${state.project.project.id}/collect`, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({collectors: state.project.project.mode === 'authorized' ? ['passive_web','dns','authorized_http','ai'] : ['passive_web','dns','ai']})}); $('runMessage').hidden=false; $('runMessage').textContent=`${result.status}: ${result.collectors.map(c => `${c.collector} ${c.status}`).join(', ')}`; await loadProject(state.project.project.id); } catch(error){ showError(error); } finally { $('collectBtn').disabled=false; } };
+$('projectForm').onsubmit = async (event) => { event.preventDefault(); const form = new FormData(event.target); const payload = Object.fromEntries(form.entries()); payload.allowed_domains = payload.allowed_domains.split(',').map(v => v.trim()).filter(Boolean); payload.aliases = payload.aliases.split(',').map(v => v.trim()).filter(Boolean); payload.brands = payload.brands.split(',').map(v => v.trim()).filter(Boolean); payload.authorized_assets = payload.authorized_assets.split(',').map(v => v.trim()).filter(Boolean); try { payload.known_social_accounts = payload.known_social_accounts.trim() ? JSON.parse(payload.known_social_accounts) : []; } catch (error) { showError(new Error('Known social accounts must be valid JSON')); return; } try { const created = await api('/api/projects', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)}); $('projectDialog').close(); await loadProject(created.id); } catch (error) { showError(error); } };
+  $('collectBtn').onclick = async () => { if (!state.project) return; $('collectBtn').disabled=true; try { const base = ['passive_web','dns','certificate_transparency','rdap','social_osint']; const result = await api(`/api/projects/${state.project.project.id}/collect`, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({collectors: state.project.project.mode === 'authorized' ? [...base,'authorized_http','ai'] : [...base,'ai']})}); $('runMessage').hidden=false; $('runMessage').textContent=`${result.status}: ${result.collectors.map(c => `${c.collector} ${c.status}`).join(', ')}`; await loadProject(state.project.project.id); } catch(error){ showError(error); } finally { $('collectBtn').disabled=false; } };
 ['assetSearch','assetType','assetStatus'].forEach(id => $(id).addEventListener('input', renderAssets));
 function showError(error) { $('runMessage').hidden=false; $('runMessage').textContent=`Error: ${error.message}`; $('runMessage').style.background='#fff1f1'; $('runMessage').style.color='#8f2020'; }
 refreshProjects().catch(showError);

@@ -14,6 +14,7 @@ class Settings:
     max_crawl_pages: int = int(os.getenv("MAX_CRAWL_PAGES", "12"))
     max_crawl_depth: int = int(os.getenv("MAX_CRAWL_DEPTH", "2"))
     request_delay_seconds: float = float(os.getenv("REQUEST_DELAY_SECONDS", "0.25"))
+    enable_rdap: bool = os.getenv("ENABLE_RDAP", "false").casefold() in {"1", "true", "yes"}
 
 
 settings = Settings()

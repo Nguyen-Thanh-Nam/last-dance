@@ -4,10 +4,10 @@ services:
     ports:
       - "8000:8000"
     environment:
-      DATABASE_PATH: /app/data/surface_map.db
+      DATABASE_PATH: /app/runtime/surface_map.db
       AI_PROVIDER: rules-demo
     volumes:
-      - surface_map_data:/app/data
+      - surface_map_data:/app/runtime
 
 volumes:
   surface_map_data:

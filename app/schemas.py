@@ -10,19 +10,29 @@ class ProjectCreate(BaseModel):
     official_website: str = Field(min_length=4, max_length=500)
     root_domain: str | None = None
     allowed_domains: list[str] = Field(default_factory=list)
+    aliases: list[str] = Field(default_factory=list)
+    brands: list[str] = Field(default_factory=list)
+    known_social_accounts: list[dict[str, Any]] = Field(default_factory=list)
+    authorized_assets: list[str] = Field(default_factory=list)
     mode: Literal["passive", "authorized"] = "passive"
     notes: str = ""
 
 
 class CollectRequest(BaseModel):
-    collectors: list[str] = Field(default_factory=lambda: ["passive_web", "dns", "ai"])
+    collectors: list[str] = Field(default_factory=lambda: ["passive_web", "dns", "certificate_transparency", "rdap", "social_osint", "ai"])
     demo: bool = False
+
+
+class ClaimReview(BaseModel):
+    status: Literal["confirmed", "related", "needs_review", "rejected"]
+    rationale: str | None = None
 
 
 class ModelRelationship(BaseModel):
     subject_type: Literal["entity", "asset"]
     subject_ref: str
     predicate: str
+    relation_class: Literal["owned", "operated", "used", "partner", "mentioned", "unknown"] = "unknown"
     object_type: Literal["entity", "asset"]
     object_ref: str
     evidence_source_id: str

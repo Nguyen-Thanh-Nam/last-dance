@@ -30,7 +30,7 @@ class RuleBasedAdapter:
                         quote = _quote(text, name, asset["display_value"])
                         if quote:
                             relationships.append(ModelRelationship(
-                                subject_type="entity", subject_ref=f"candidate:product:{normalize_name(name)}", predicate="PRODUCT_USES_WEBSITE", object_type="asset", object_ref=f"asset:{asset['id']}", evidence_source_id=source["id"], evidence_quote=quote, rationale="The same official source names the product and links the technical asset.", confidence=0.88,
+                                subject_type="entity", subject_ref=f"candidate:product:{normalize_name(name)}", predicate="PRODUCT_USES_WEBSITE", relation_class="used", object_type="asset", object_ref=f"asset:{asset['id']}", evidence_source_id=source["id"], evidence_quote=quote, rationale="The same source names the product and links the technical asset; this supports use/linkage, not ownership.", confidence=0.88,
                             ))
             for name in projects:
                 entities.append({"entity_type": "project", "name": name, "source_id": source["id"]})

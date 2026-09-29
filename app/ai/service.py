@@ -48,14 +48,24 @@ def run_ai_enrichment(db, project: dict[str, Any]) -> dict[str, Any]:
         if not subject_id or not object_id:
             needs_review += 1
             continue
-        status = "confirmed" if valid_quote and candidate.confidence >= 0.8 else "needs_review"
-        evidence_id = insert_evidence(db, project["id"], source_id, quote, "model-validated" if valid_quote else "model-evidence-failed", candidate.confidence, "valid" if valid_quote else "invalid") if valid_source else None
-        insert_relationship(db, project["id"], candidate.subject_type, subject_id, candidate.predicate, candidate.object_type, object_id, status, candidate.confidence if valid_quote else min(candidate.confidence, 0.25), candidate.rationale, evidence_id)
+        final_confidence = _evidence_confidence(sources, source_id, quote, candidate.confidence, valid_quote)
+        status = "confirmed" if valid_quote and final_confidence >= 0.8 else "needs_review"
+        evidence_id = insert_evidence(db, project["id"], source_id, quote, "model-validated" if valid_quote else "model-evidence-failed", final_confidence, "valid" if valid_quote else "invalid") if valid_source else None
+        insert_relationship(db, project["id"], candidate.subject_type, subject_id, candidate.predicate, candidate.object_type, object_id, status, final_confidence, candidate.rationale, evidence_id, candidate.relation_class)
         if status == "confirmed":
             accepted += 1
         else:
             needs_review += 1
     return {"provider": adapter.name, "explanation": output.explanation, "relationships_accepted": accepted, "relationships_needs_review": needs_review}
+
+
+def _evidence_confidence(sources: list[dict[str, Any]], source_id: str, quote: str, model_confidence: float, valid_quote: bool) -> float:
+    if not valid_quote:
+        return min(model_confidence, 0.25)
+    source = next((item for item in sources if item["id"] == source_id), {})
+    quality = {"website": 0.9, "demo_fixture": 0.9, "social_post": 0.82, "social_manual": 0.78, "certificate_transparency": 0.65, "dns": 0.6}.get(source.get("source_type"), 0.55)
+    directness = 0.95 if len(quote) >= 40 else 0.7
+    return round(min(0.98, 0.45 * quality + 0.35 * directness + 0.20 * model_confidence), 2)
 
 
 def _resolve_ref(ref_type: str, ref: str, entity_refs: dict[str, str], assets: list[dict[str, Any]]) -> str | None:

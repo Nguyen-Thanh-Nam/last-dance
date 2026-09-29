@@ -61,6 +61,8 @@ class PassiveWebCollector(Collector):
         source_id = insert_source(context.db, project["id"], "website", "official website", final_url, parser.title.strip(), content, {"content_type": content_type})
         count = 0
         host = urlsplit(final_url).hostname or ""
+        port = urlsplit(final_url).port or (443 if urlsplit(final_url).scheme == "https" else 80)
+        upsert_asset(context.db, project["id"], "service", f"http|{host}|{port}", f"HTTP {host}:{port}", "confirmed", source_id, {"scheme": urlsplit(final_url).scheme, "port": port})
         upsert_asset(context.db, project["id"], "website", normalize_url(final_url), final_url, "confirmed", source_id, {"content_type": content_type})
         upsert_asset(context.db, project["id"], "host", normalize_domain(host), host, "discovered", source_id)
         count += 2
