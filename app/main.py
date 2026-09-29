@@ -9,7 +9,7 @@ from fastapi.staticfiles import StaticFiles
 
 from .db import db_session, get_project, init_db, list_projects, rows, now_iso
 from .normalize import normalize_domain
-from .pipeline import project_snapshot, run_collection
+from .pipeline import collectors_for_profile, project_snapshot, run_collection
 from .report import report_html, report_json
 from .sample_data import load_demo
 from .schemas import ClaimReview, CollectRequest, ProjectCreate
@@ -68,10 +68,22 @@ def project_detail(project_id: str) -> dict:
 
 @app.post("/api/projects/{project_id}/collect")
 def collect(project_id: str, payload: CollectRequest) -> dict:
-    try:
-        return run_collection(project_id, payload.collectors, payload.demo)
-    except KeyError:
+    with db_session() as db:
+        project = get_project(db, project_id)
+    if not project:
         raise HTTPException(status_code=404, detail="project not found")
+    collector_names = collectors_for_profile(project, payload.profile, payload.collectors)
+    return run_collection(project_id, collector_names, payload.demo, payload.profile)
+
+
+@app.delete("/api/projects/{project_id}")
+def delete_project(project_id: str) -> dict[str, str]:
+    with db_session() as db:
+        existing = db.execute("SELECT id FROM projects WHERE id=?", (project_id,)).fetchone()
+        if not existing:
+            raise HTTPException(status_code=404, detail="project not found")
+        db.execute("DELETE FROM projects WHERE id=?", (project_id,))
+    return {"deleted": project_id}
 
 
 @app.post("/api/demo/load")

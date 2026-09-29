@@ -9,6 +9,7 @@ from app.db import insert_source, upsert_asset
 from app.ai.service import run_ai_enrichment
 from app.main import app
 from app.normalize import normalize_endpoint, normalize_name
+from app.pipeline import collectors_for_profile
 from app.schemas import ModelOutput, ModelRelationship
 from app.scope import is_host_allowed, validate_url_scope
 
@@ -103,3 +104,14 @@ def test_invalid_model_quote_is_saved_as_needs_review(tmp_path, monkeypatch):
         relationship = db.execute("SELECT status, confidence FROM relationships WHERE project_id=?", (project["id"],)).fetchone()
         assert relationship["status"] == "needs_review"
         assert relationship["confidence"] <= 0.25
+
+
+def test_full_profile_respects_authorization_scope_and_delete_project(tmp_path):
+    _use_tmp_db(tmp_path)
+    assert "authorized_http" not in collectors_for_profile({"mode": "passive"}, "full")
+    assert "authorized_http" in collectors_for_profile({"mode": "authorized"}, "full")
+    with TestClient(app) as client:
+        created = client.post("/api/projects", json={"organization_name": "Delete Me", "official_website": "https://delete.example", "allowed_domains": ["delete.example"], "mode": "passive"}).json()
+        deleted = client.delete(f"/api/projects/{created['id']}")
+        assert deleted.status_code == 200
+        assert client.get(f"/api/projects/{created['id']}").status_code == 404

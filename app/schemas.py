@@ -19,7 +19,8 @@ class ProjectCreate(BaseModel):
 
 
 class CollectRequest(BaseModel):
-    collectors: list[str] = Field(default_factory=lambda: ["passive_web", "dns", "certificate_transparency", "rdap", "social_osint", "ai"])
+    collectors: list[str] = Field(default_factory=list)
+    profile: Literal["standard", "full"] = "standard"
     demo: bool = False
 
 

@@ -9,14 +9,28 @@ from .config import settings
 from .db import db_session, get_project, make_id, now_iso, row_or_none, rows
 
 
-def run_collection(project_id: str, collector_names: list[str], demo: bool = False) -> dict[str, Any]:
+PASSIVE_COLLECTORS = ["passive_web", "dns", "certificate_transparency", "rdap", "social_osint", "ai"]
+
+
+def collectors_for_profile(project: dict[str, Any], profile: str, requested: list[str] | None = None) -> list[str]:
+    """Resolve a bounded collector preset; full never bypasses project scope."""
+    if requested:
+        names = list(requested)
+    else:
+        names = list(PASSIVE_COLLECTORS)
+    if profile == "full" and project["mode"] == "authorized":
+        names.insert(-1 if "ai" in names else len(names), "authorized_http")
+    return list(dict.fromkeys(names))
+
+
+def run_collection(project_id: str, collector_names: list[str], demo: bool = False, profile: str = "standard") -> dict[str, Any]:
     with db_session() as db:
         project = get_project(db, project_id)
         if not project:
             raise KeyError("project not found")
         run_id = make_id("run")
         started = now_iso()
-        db.execute("INSERT INTO collection_runs(id, project_id, status, started_at, config_json) VALUES(?,?,?,?,?)", (run_id, project_id, "running", started, __import__("json").dumps({"collectors": collector_names, "demo": demo, "max_pages": settings.max_crawl_pages, "max_depth": settings.max_crawl_depth, "request_delay_seconds": settings.request_delay_seconds, "allowed_domains": project["allowed_domains"]})))
+        db.execute("INSERT INTO collection_runs(id, project_id, status, started_at, config_json) VALUES(?,?,?,?,?)", (run_id, project_id, "running", started, __import__("json").dumps({"collectors": collector_names, "profile": profile, "demo": demo, "max_pages": settings.max_crawl_pages, "max_depth": settings.max_crawl_depth, "request_delay_seconds": settings.request_delay_seconds, "allowed_domains": project["allowed_domains"], "authorized_assets": project.get("authorized_assets", [])})))
         context = CollectorContext(db, project, run_id, settings.max_crawl_pages, settings.max_crawl_depth, settings.request_delay_seconds)
         registry = {"passive_web": PassiveWebCollector(), "dns": DnsCollector(), "certificate_transparency": CertificateTransparencyCollector(), "rdap": RdapCollector(), "social_osint": SocialOSINTCollector(), "authorized_http": AuthorizedHttpCollector()}
         result_rows: list[dict[str, Any]] = []
@@ -52,7 +66,7 @@ def run_collection(project_id: str, collector_names: list[str], demo: bool = Fal
             result_rows.append({"collector": name, "status": result.status, "message": result.message, "records_count": result.records_count})
         final_status = "completed_with_errors" if errors else "completed"
         db.execute("UPDATE collection_runs SET status=?, finished_at=?, error_count=? WHERE id=?", (final_status, now_iso(), errors, run_id))
-        return {"run_id": run_id, "status": final_status, "error_count": errors, "collectors": result_rows}
+        return {"run_id": run_id, "status": final_status, "error_count": errors, "profile": profile, "collectors": result_rows}
 
 
 def project_snapshot(db, project_id: str) -> dict[str, Any] | None:

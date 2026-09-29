@@ -26,7 +26,7 @@ cp .env.example .env  # optional; export values in your shell or use a dotenv ru
 python -m uvicorn app.main:app --reload
 ```
 
-Open <http://127.0.0.1:8000>. Click **Load demo** to create/open the fixed Acme Robotics fixture. The fixture is synthetic and must not be described as an external scan or real AI result.
+Open <http://127.0.0.1:8000>. Click **Load demo** to create/open the fixed Acme Robotics fixture. The fixture is synthetic and must not be described as an external scan or real AI result. The project page has **Run collection** and **Full collection**; full mode enables every collector allowed by the project mode and still enforces the same allowlist. **Delete project** removes only the selected project and its related evidence/runs.
 
 Without a browser:
 
@@ -84,7 +84,8 @@ The fixture ground truth is in `data/evaluation_ground_truth.json`. It expects `
 ## API overview
 
 - `POST /api/projects`, `GET /api/projects`, `GET /api/projects/{id}`
-- `POST /api/projects/{id}/collect`
+- `POST /api/projects/{id}/collect` with `{"profile":"standard"}` or `{"profile":"full"}`. Full adds authorized HTTP only when the project is `authorized`.
+- `DELETE /api/projects/{id}`
 - `POST /api/demo/load`
 - `GET /api/projects/{id}/social`
 - `GET /api/projects/{id}/assets?q=&asset_type=&status=&source=`

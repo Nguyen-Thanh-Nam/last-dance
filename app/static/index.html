@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Surface Map AI</title>
   <link rel="stylesheet" href="/static/styles.css" />
+  <link rel="stylesheet" href="/static/extra.css" />
 </head>
 <body>
   <header class="topbar"><div><strong>Surface Map AI</strong><span class="muted">Evidence-backed external surface discovery</span></div><button id="demoBtn" class="secondary">Load demo</button></header>
@@ -15,7 +16,7 @@
     <section class="content">
       <div id="emptyState" class="empty"><h1>Start an evidence-backed inventory</h1><p>Create a project or load the deterministic demo dataset.</p></div>
       <div id="appView" hidden>
-        <div class="projectHead"><div><div class="eyebrow" id="projectMode"></div><h1 id="projectName"></h1><p id="projectMeta" class="muted"></p></div><div class="actions"><button id="collectBtn" class="primary">Run collection</button><a id="jsonLink" class="button secondary">JSON report</a><a id="htmlLink" class="button secondary">HTML report</a></div></div>
+        <div class="projectHead"><div><div class="eyebrow" id="projectMode"></div><h1 id="projectName"></h1><p id="projectMeta" class="muted"></p></div><div class="actions"><button id="collectBtn" class="primary">Run collection</button><button id="fullCollectBtn" class="secondary">Full collection</button><a id="jsonLink" class="button secondary">JSON report</a><a id="htmlLink" class="button secondary">HTML report</a><button id="deleteProjectBtn" class="danger">Delete project</button></div></div>
         <div id="runMessage" class="notice" hidden></div>
         <div class="stats" id="stats"></div>
         <section class="panel"><div class="panelHead"><h2>Collection logs</h2><span class="muted">Each collector is isolated; errors do not discard other records.</span></div><div class="tableWrap"><table><thead><tr><th>Collector</th><th>Status</th><th>Records</th><th>Duration</th><th>Message</th></tr></thead><tbody id="collectorRows"></tbody></table></div></section>
