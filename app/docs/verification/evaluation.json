@@ -1,0 +1,126 @@
+{
+  "fixture": "acme-robotics-demo",
+  "B0": {
+    "asset_scores": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "true_positive": 3,
+      "false_positive": 0,
+      "false_negative": 0,
+      "predicted": 3,
+      "ground_truth": 3
+    },
+    "relation_scores": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "true_positive": 5,
+      "false_positive": 0,
+      "false_negative": 0,
+      "predicted": 5,
+      "ground_truth": 5
+    },
+    "entity_scores": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "true_positive": 2,
+      "false_positive": 0,
+      "false_negative": 0,
+      "predicted": 2,
+      "ground_truth": 2
+    },
+    "relation_scores_by_predicate": {
+      "OFFICIAL_SOCIAL_ACCOUNT": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "true_positive": 1,
+        "false_positive": 0,
+        "false_negative": 0,
+        "predicted": 1,
+        "ground_truth": 1
+      },
+      "POST_LINKS_TO_ENDPOINT": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "true_positive": 1,
+        "false_positive": 0,
+        "false_negative": 0,
+        "predicted": 1,
+        "ground_truth": 1
+      },
+      "POST_MENTIONS_PRODUCT": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "true_positive": 1,
+        "false_positive": 0,
+        "false_negative": 0,
+        "predicted": 1,
+        "ground_truth": 1
+      },
+      "PRODUCT_USES_WEBSITE": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "true_positive": 2,
+        "false_positive": 0,
+        "false_negative": 0,
+        "predicted": 2,
+        "ground_truth": 2
+      }
+    },
+    "confidence_bucket_metrics": {
+      "high": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "true_positive": 5,
+        "false_positive": 0,
+        "false_negative": 0,
+        "predicted": 5,
+        "ground_truth": 5
+      },
+      "medium": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "true_positive": 0,
+        "false_positive": 0,
+        "false_negative": 5,
+        "predicted": 0,
+        "ground_truth": 5
+      },
+      "low": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "true_positive": 0,
+        "false_positive": 0,
+        "false_negative": 5,
+        "predicted": 0,
+        "ground_truth": 5
+      }
+    },
+    "traceability_rate": 1.0,
+    "coverage": 1.0,
+    "needs_review_count": 0,
+    "false_positive_assets": [],
+    "false_negative_assets": [],
+    "false_positive_relations": [],
+    "false_negative_relations": [],
+    "collector_duration_ms": 0
+  },
+  "B1": {
+    "status": "not_run",
+    "reason": "Use --with-ai and configure a real provider."
+  },
+  "limitations": [
+    "Synthetic fixture only; this is functional verification, not research validation.",
+    "No independent human labeling, held-out organizations or Internet reachability measurement is claimed.",
+    "Known root-domain seeds are excluded; every concluded in-scope host/endpoint prediction is scored, including false positives."
+  ]
+}

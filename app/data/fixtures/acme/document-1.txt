@@ -1,0 +1,10 @@
+
+<html><head><title>Acme Robotics | Products</title></head>
+<body>
+<h1>Acme Robotics</h1>
+<p>Product: Fleet Console helps operators monitor field robots.</p>
+<p>Project: Horizon is the public autonomy research program.</p>
+<a href="https://app.acme.example/login?next=/dashboard&tenant=acme">Open Fleet Console</a>
+<a href="https://status.acme.example/">Service status</a>
+<a href="https://facebook.com/acmerobotics">Official Facebook</a>
+</body></html>

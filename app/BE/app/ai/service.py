@@ -1,0 +1,93 @@
+from __future__ import annotations
+
+import json
+import re
+import time
+import hashlib
+from typing import Any
+
+from ..config import settings
+from ..db import insert_evidence, insert_relationship, upsert_entity, rows, make_id, now_iso, current_run_id
+from ..normalize import normalize_name
+from ..schemas import ModelOutput
+from .openai_compatible import OpenAICompatibleAdapter
+from .rules import RuleBasedAdapter
+
+
+def _adapter():
+    if settings.ai_provider in {"openai", "openai-compatible"}:
+        return OpenAICompatibleAdapter(settings.ai_base_url, settings.ai_api_key, settings.ai_model)
+    return RuleBasedAdapter()
+
+
+def run_ai_enrichment(db, project: dict[str, Any], adapter=None) -> dict[str, Any]:
+    sources = rows(db.execute("SELECT * FROM sources WHERE project_id=? ORDER BY collected_at", (project["id"],)))
+    assets = rows(db.execute("SELECT * FROM assets WHERE project_id=? ORDER BY asset_type, canonical_value", (project["id"],)))
+    adapter = adapter or _adapter()
+    started = time.monotonic()
+    timestamp = now_iso()
+    output: ModelOutput = adapter.analyze(project, sources, assets)
+    input_hash = hashlib.sha256(json.dumps({"sources": sources, "assets": assets}, sort_keys=True).encode()).hexdigest()
+    db.execute("INSERT INTO model_runs(id, project_id, run_id, provider, model, prompt_version, schema_version, started_at, duration_ms, input_hash, output_json, status) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
+               (make_id("model"), project["id"], current_run_id.get(), adapter.name, settings.ai_model if adapter.name != "rules-demo" else "deterministic-rules-v1", "evidence-v2", "2", timestamp, int((time.monotonic()-started)*1000), input_hash, output.model_dump_json(), "completed"))
+    db.execute("UPDATE model_runs SET metadata_json=? WHERE rowid=last_insert_rowid()", (json.dumps({"temperature": 0, "usage": getattr(adapter, "last_usage", {}), "currency_cost": None, "currency_cost_note": "Price schedule is not configured; no monetary cost is inferred."}),))
+    entity_refs: dict[str, str] = {}
+    for entity in rows(db.execute("SELECT id FROM entities WHERE project_id=?", (project["id"],))):
+        entity_refs[f"entity:{entity['id']}"] = entity["id"]
+    source_ids = {source["id"] for source in sources}
+    source_text = {source["id"]: source.get("raw_content", "") for source in sources}
+    for entity in output.entities:
+        entity = entity.model_dump()
+        name = str(entity.get("name", "")).strip()
+        entity_type = str(entity.get("entity_type", "")).strip().lower()
+        if not name or entity_type not in {"organization", "product", "project", "website"}:
+            continue
+        source_id = entity.get("source_id") if entity.get("source_id") in source_ids else None
+        entity_id = upsert_entity(db, project["id"], entity_type, normalize_name(name), name, "discovered", source_id)
+        entity_refs[f"candidate:{entity_type}:{normalize_name(name)}"] = entity_id
+    accepted = 0
+    needs_review = 0
+    for candidate in output.relationships:
+        source_id = candidate.evidence_source_id
+        quote = candidate.evidence_quote.strip()
+        valid_source = source_id in source_ids
+        normalized_quote = re.sub(r"\s+", " ", quote).strip()
+        normalized_source = re.sub(r"\s+", " ", source_text.get(source_id, "")).strip()
+        valid_quote = valid_source and bool(normalized_quote) and normalized_quote in normalized_source
+        subject_id = _resolve_ref(candidate.subject_type, candidate.subject_ref, entity_refs, assets)
+        object_id = _resolve_ref(candidate.object_type, candidate.object_ref, entity_refs, assets)
+        if not subject_id or not object_id:
+            needs_review += 1
+            continue
+        if not valid_source:
+            needs_review += 1
+            continue
+        final_confidence = _evidence_confidence(sources, source_id, quote, candidate.confidence, valid_quote)
+        status = "confirmed" if valid_quote and final_confidence >= 0.8 else "needs_review"
+        if adapter.name != "rules-demo" or candidate.predicate in {"controlled_by", "owns", "OWNED_BY"}:
+            status = "related" if valid_quote else "needs_review"
+        evidence_id = insert_evidence(db, project["id"], source_id, quote, "model-validated" if valid_quote else "model-evidence-failed", final_confidence, "valid" if valid_quote else "invalid") if valid_source else None
+        insert_relationship(db, project["id"], candidate.subject_type, subject_id, candidate.predicate, candidate.object_type, object_id, status, final_confidence, candidate.rationale, evidence_id, candidate.relation_class)
+        if status in {"confirmed", "related"}:
+            accepted += 1
+        else:
+            needs_review += 1
+    return {"provider": adapter.name, "explanation": output.explanation, "relationships_accepted": accepted, "relationships_needs_review": needs_review}
+
+
+def _evidence_confidence(sources: list[dict[str, Any]], source_id: str, quote: str, model_confidence: float, valid_quote: bool) -> float:
+    if not valid_quote:
+        return min(model_confidence, 0.25)
+    source = next((item for item in sources if item["id"] == source_id), {})
+    quality = {"website": 0.9, "demo_fixture": 0.9, "social_post": 0.82, "social_manual": 0.78, "certificate_transparency": 0.65, "dns": 0.6}.get(source.get("source_type"), 0.55)
+    directness = 0.95 if len(quote) >= 40 else 0.7
+    return round(min(0.98, 0.45 * quality + 0.35 * directness + 0.20 * model_confidence), 2)
+
+
+def _resolve_ref(ref_type: str, ref: str, entity_refs: dict[str, str], assets: list[dict[str, Any]]) -> str | None:
+    if ref_type == "entity":
+        return entity_refs.get(ref)
+    if ref_type == "asset" and ref.startswith("asset:"):
+        asset_id = ref.split(":", 1)[1]
+        return asset_id if any(asset["id"] == asset_id for asset in assets) else None
+    return None

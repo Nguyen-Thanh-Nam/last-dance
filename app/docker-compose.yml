@@ -1,0 +1,52 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: backend
+    ports:
+      - "127.0.0.1:3333:3333"
+    environment:
+      DATABASE_PATH: /app/runtime/surface_map.db
+      AI_PROVIDER: ${AI_PROVIDER:-rules-demo}
+      AI_BASE_URL: ${AI_BASE_URL:-}
+      AI_API_KEY: ${AI_API_KEY:-}
+      AI_MODEL: ${AI_MODEL:-}
+      MAX_CRAWL_PAGES: ${MAX_CRAWL_PAGES:-12}
+      MAX_CRAWL_DEPTH: ${MAX_CRAWL_DEPTH:-2}
+      REQUEST_DELAY_SECONDS: ${REQUEST_DELAY_SECONDS:-0.25}
+      ENABLE_RDAP: ${ENABLE_RDAP:-false}
+      ALLOW_PRIVATE_LAB: ${ALLOW_PRIVATE_LAB:-false}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://127.0.0.1:2222,http://localhost:2222}
+    volumes:
+      - surface_map_data:/app/runtime
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:3333/api/health', timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: frontend
+    ports:
+      - "127.0.0.1:2222:2222"
+    depends_on:
+      backend:
+        condition: service_healthy
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+
+volumes:
+  surface_map_data:

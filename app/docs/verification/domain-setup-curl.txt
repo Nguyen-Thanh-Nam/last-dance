@@ -1,0 +1,1 @@
+PASS: 17 curl checks; domain-only setup, automatic pipeline, social discovery, AI fixture and reports.

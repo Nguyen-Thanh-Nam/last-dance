@@ -1,0 +1,49 @@
+{
+  "dataset": "acme-synthetic-v2",
+  "purpose": "offline functional regression; not research evaluation",
+  "ground_truth": "../../evaluation_ground_truth.json",
+  "documents": [
+    {
+      "document_id": "acme-1",
+      "organization": "Acme Robotics (synthetic)",
+      "source_type": "demo_fixture",
+      "source_url": "https://acme.example/products",
+      "snapshot_path": "document-1.txt",
+      "collected_at": "2026-10-02T02:50:40+00:00",
+      "sha256": "bdfc3a28487a977f5e668b771ec56e711fd8857bb655b29ba382998255de9e08",
+      "language": "en",
+      "split": "development",
+      "content_status": "synthetic_fixture",
+      "annotation_status": "code-maintained_fixture",
+      "independent_reviewers": []
+    },
+    {
+      "document_id": "acme-2",
+      "organization": "Acme Robotics (synthetic)",
+      "source_type": "social_manual",
+      "source_url": "https://facebook.com/acmerobotics",
+      "snapshot_path": "document-2.txt",
+      "collected_at": "2026-10-02T02:50:40+00:00",
+      "sha256": "8c60fa5e998709f7bca9375a979e6549988b3f0b1e040669d9c9575b933d8254",
+      "language": "en",
+      "split": "development",
+      "content_status": "synthetic_fixture",
+      "annotation_status": "code-maintained_fixture",
+      "independent_reviewers": []
+    },
+    {
+      "document_id": "acme-3",
+      "organization": "Acme Robotics (synthetic)",
+      "source_type": "social_post",
+      "source_url": "https://facebook.com/acmerobotics/posts/1001",
+      "snapshot_path": "document-3.txt",
+      "collected_at": "2026-10-02T02:50:40+00:00",
+      "sha256": "14844d981d84e57d0f36cc2f44730933c3092a1bfb5d38274f9eaba41bd9defe",
+      "language": "en",
+      "split": "development",
+      "content_status": "synthetic_fixture",
+      "annotation_status": "code-maintained_fixture",
+      "independent_reviewers": []
+    }
+  ]
+}

@@ -1,0 +1,297 @@
+{
+  "figma_file": "RwJ5LozBocVhfqsLTZIc8M",
+  "desktop_node": "78:351",
+  "mobile_node": "169:3352",
+  "assets": [
+    {
+      "name": "imgPexelsChristinaMorillo11816902",
+      "file": "imgPexelsChristinaMorillo11816902.png",
+      "sha256": "a286d564314782fd0da1f72551872e4e06d37ecf990b90e538581693bec8077c"
+    },
+    {
+      "name": "imgIconfinderVector65094737921",
+      "file": "imgIconfinderVector65094737921.png",
+      "sha256": "df077dc798f28cbbc7540369c447160ee7515c8c751b7adb8163ea285e219c19"
+    },
+    {
+      "name": "imgChipCard",
+      "file": "imgChipCard.png",
+      "sha256": "1e3cc4e8c34049190d32375374d6038e13aa80774d600e3bc953e09843e26be3"
+    },
+    {
+      "name": "imgChipCard1",
+      "file": "imgChipCard1.png",
+      "sha256": "bb9f5bdffb9e088b7363a778d4b876fa64a95591f42254dd4dc2000e6795b8c4"
+    },
+    {
+      "name": "imgEllipse10",
+      "file": "imgEllipse10.svg",
+      "sha256": "868b1208981252dc2a8d4fd9ce2ca98c064ce94e785ad6d97eda376b4b77e18d",
+      "svg_root": {
+        "width": "55",
+        "height": "55",
+        "viewBox": "0 0 55 55"
+      }
+    },
+    {
+      "name": "imgPaypalPaymentPay",
+      "file": "imgPaypalPaymentPay.svg",
+      "sha256": "d065dc1be2eddfa61628db0e5c4a4ad7cbe8fb46fb2c7aadf46f30dd17fdbb28",
+      "svg_root": {
+        "width": "20.2485",
+        "height": "22.7502",
+        "viewBox": "0 0 20.2485 22.7502"
+      }
+    },
+    {
+      "name": "imgEllipse13",
+      "file": "imgEllipse13.svg",
+      "sha256": "36ff2c5d8d8263aebe68bda26cea9e79bfc13b3ef2697a6fa80583985f0862f5",
+      "svg_root": {
+        "width": "55",
+        "height": "55",
+        "viewBox": "0 0 55 55"
+      }
+    },
+    {
+      "name": "img1",
+      "file": "img1.svg",
+      "sha256": "94418d42a388fdca623fa964a98b71601361089db1e3186a23632cd52f39a87b",
+      "svg_root": {
+        "width": "21.875",
+        "height": "17.3906",
+        "viewBox": "0 0 21.875 17.3906"
+      }
+    },
+    {
+      "name": "imgEllipse14",
+      "file": "imgEllipse14.svg",
+      "sha256": "d40c016c9b5a5712cef82abc356efe586db01cff0897f59ff2c44faf3a652f12",
+      "svg_root": {
+        "width": "55",
+        "height": "55",
+        "viewBox": "0 0 55 55"
+      }
+    },
+    {
+      "name": "imgLayerX00201",
+      "file": "imgLayerX00201.svg",
+      "sha256": "ca9c7e5e74c25a11f985061bf58bc8e823f2495c671246293ef9dcee154490dd",
+      "svg_root": {
+        "width": "24.6059",
+        "height": "24.6059",
+        "viewBox": "0 0 24.6059 24.6059"
+      }
+    },
+    {
+      "name": "imgGroup4",
+      "file": "imgGroup4.svg",
+      "sha256": "7c3d90bd02ac87d3dc313a71a728fbe84613e524560a106bff50cdde20a3d3f8",
+      "svg_root": {
+        "width": "50",
+        "height": "50",
+        "viewBox": "0 0 50 50"
+      }
+    },
+    {
+      "name": "imgGroup5",
+      "file": "imgGroup5.svg",
+      "sha256": "ed747b2ab0ca4a24f70e08698b6e4e8f4f60a03040d9ac080327829de66b2356",
+      "svg_root": {
+        "width": "50",
+        "height": "50",
+        "viewBox": "0 0 50 50"
+      }
+    },
+    {
+      "name": "imgGroup6",
+      "file": "imgGroup6.svg",
+      "sha256": "e0c505ae16baff9c9048a0c72138f65e8cba5a08a5aa99494af3a2a11a5a7801",
+      "svg_root": {
+        "width": "19.1406",
+        "height": "19.1406",
+        "viewBox": "0 0 19.1406 19.1406"
+      }
+    },
+    {
+      "name": "imgGroup7",
+      "file": "imgGroup7.svg",
+      "sha256": "4568dca8d0581eb743056b78ef1641e6cebca14ccf52676294107378ef971175",
+      "svg_root": {
+        "width": "8.06387",
+        "height": "8.06389",
+        "viewBox": "0 0 8.06387 8.06389"
+      }
+    },
+    {
+      "name": "imgGroup8",
+      "file": "imgGroup8.svg",
+      "sha256": "ce37af9805664edfb8555b27b8de252d41989e71a25ffa86fa6a9920e3f1e55d",
+      "svg_root": {
+        "width": "8.87451",
+        "height": "8.87451",
+        "viewBox": "0 0 8.87451 8.87451"
+      }
+    },
+    {
+      "name": "imgGroup9",
+      "file": "imgGroup9.svg",
+      "sha256": "25f9289f4ca05046df9834a16d4a1fd6fdebb01c2e2bd88c212d7c1171452a85",
+      "svg_root": {
+        "width": "7.0712",
+        "height": "7.07121",
+        "viewBox": "0 0 7.0712 7.07121"
+      }
+    },
+    {
+      "name": "imgGroup10",
+      "file": "imgGroup10.svg",
+      "sha256": "9523e77120480de862ff75994133dcca6d54474c91b602c78c5cc18002d5e9cb",
+      "svg_root": {
+        "width": "10.3477",
+        "height": "10.3476",
+        "viewBox": "0 0 10.3477 10.3476"
+      }
+    },
+    {
+      "name": "imgGroup11",
+      "file": "imgGroup11.svg",
+      "sha256": "23b29854a7c5687b26c7ac2cd5fe809032af99e730224a5acf9db1952af75af8",
+      "svg_root": {
+        "width": "10.9344",
+        "height": "11.9741",
+        "viewBox": "0 0 10.9344 11.9741"
+      }
+    },
+    {
+      "name": "imgGroup12",
+      "file": "imgGroup12.svg",
+      "sha256": "fbd0c9833e1203e7028aa583d93b317d2435cee9e888b35579d7d83d75ebaaa0",
+      "svg_root": {
+        "width": "11.9821",
+        "height": "10.9462",
+        "viewBox": "0 0 11.9821 10.9462"
+      }
+    },
+    {
+      "name": "imgSettingsSolid1",
+      "file": "imgSettingsSolid1.svg",
+      "sha256": "0eebb8751be0e01de7272f8de755f8ff7c98274d360eaea6577edfeaad136980",
+      "svg_root": {
+        "width": "25",
+        "height": "25",
+        "viewBox": "0 0 25 25"
+      }
+    },
+    {
+      "name": "imgGroup13",
+      "file": "imgGroup13.svg",
+      "sha256": "a6e204ad4652277654edea5359c43197cfb164d9f4aa83514eae8e99f2045efa",
+      "svg_root": {
+        "width": "26",
+        "height": "18.3149",
+        "viewBox": "0 0 26 18.3149"
+      }
+    },
+    {
+      "name": "imgLayer11",
+      "file": "imgLayer11.svg",
+      "sha256": "f3d59f264fac5160267278e0a268dca514110f3d839e30cc176fddf22022abf2",
+      "svg_root": {
+        "width": "25",
+        "height": "25",
+        "viewBox": "0 0 25 25"
+      }
+    },
+    {
+      "name": "img17Transfer",
+      "file": "img17Transfer.svg",
+      "sha256": "8163b344b8f66c0342af4637bc47a1cbf8d8561f90aede3cd5347197773ac1fb",
+      "svg_root": {
+        "width": "24.9999",
+        "height": "25",
+        "viewBox": "0 0 24.9999 25"
+      }
+    },
+    {
+      "name": "imgGroup14",
+      "file": "imgGroup14.svg",
+      "sha256": "b15a58f38b90886cecc667af9af46b18ca2c8eb587fa4153683c0e5beb1c8fe1",
+      "svg_root": {
+        "width": "24.2531",
+        "height": "25",
+        "viewBox": "0 0 24.2531 25"
+      }
+    },
+    {
+      "name": "imgUser31",
+      "file": "imgUser31.svg",
+      "sha256": "f25feb8ec52cb31f08508996f8133df9aeabe60ac08481fc3d60fef4f6cec8db",
+      "svg_root": {
+        "width": "25",
+        "height": "25",
+        "viewBox": "0 0 25 25"
+      }
+    },
+    {
+      "name": "imgGroup15",
+      "file": "imgGroup15.svg",
+      "sha256": "804b04edbf39e37653a269e2643cc13daab05a63198c9bc73899ff0de183ae79",
+      "svg_root": {
+        "width": "24.1189",
+        "height": "25",
+        "viewBox": "0 0 24.1189 25"
+      }
+    },
+    {
+      "name": "imgHome2",
+      "file": "imgHome2.svg",
+      "sha256": "8f0bb8079806da4372efb4b315bc52678d1591840c3b5c17a3bf9c1abe16be80",
+      "svg_root": {
+        "width": "25",
+        "height": "25",
+        "viewBox": "0 0 25 25"
+      }
+    },
+    {
+      "name": "imgGroup17",
+      "file": "imgGroup17.svg",
+      "sha256": "aa41a020686910da18a42b3d83c6f849cb2c2e1d8ce7ab71391824b92d1df1ef",
+      "svg_root": {
+        "width": "44",
+        "height": "30",
+        "viewBox": "0 0 44 30"
+      }
+    },
+    {
+      "name": "imgGroup18",
+      "file": "imgGroup18.svg",
+      "sha256": "fee415ccd3cfee7b1606d55d961652efbcad923be51b0fcbdd79d6bddaf9ccdf",
+      "svg_root": {
+        "width": "44",
+        "height": "30",
+        "viewBox": "0 0 44 30"
+      }
+    },
+    {
+      "name": "imgGroup17Mobile",
+      "file": "imgGroup17Mobile.svg",
+      "sha256": "436fecdcc2e10e8fd9e4cfe48660606cabe166a2ddedbe6ba8a4c28dd6ca3e44",
+      "svg_root": {
+        "width": "27",
+        "height": "18.4091",
+        "viewBox": "0 0 27 18.4091"
+      }
+    },
+    {
+      "name": "imgGroup18Mobile",
+      "file": "imgGroup18Mobile.svg",
+      "sha256": "33a5ba6a701d28da81413e2f915fdc5abb53db1b0ec84fef92f9ce3efd6a0231",
+      "svg_root": {
+        "width": "27",
+        "height": "18.4091",
+        "viewBox": "0 0 27 18.4091"
+      }
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+Nghiên cứu và phát triển hệ thống AI hỗ trợ nhận diện bề mặt tấn công bên ngoài của tổ chức từ thông tin công khai trên Internet
+
+- Phương pháp thu thập thông tin từ nguồn công khai (OSINT)
+- Tìm hiểu phương pháp chuẩn hóa dữ liệu, xác định tài sản thuộc tổ chức và liên kết thông tin kỹ thuật với thông tin phi kỹ thuật
+- Nghiên cứu ứng dụng AI trong trích xuất thực thể, phát hiện mối liên hệ, tổng hợp thông tin và giải thích kết quả dựa trên nguồn chứng cứ
+- Xây dựng tiêu chí đánh giá độ chính xác, độ tin cậy và khả năng truy xuất nguồn của các kết quả phân tích.
+
+- Xây dựng chức năng thu thập, chuẩn hóa và loại trùng dữ liệu kỹ thuật từ các nguồn công khai; thực hiện kiểm tra chủ động đối với tài sản thuộc phạm vi được cho phép
+- Xây dựng chức năng thu thập thông tin công khai về tổ chức, sản phẩm, dự án và các kênh truyền thông chính thức
+- Tích hợp AI để trích xuất thông tin, gợi ý mối liên hệ giữa tổ chức, sản phẩm và tài sản số; hiển thị nguồn chứng cứ và mức độ tin cậy cho từng nhận định
+- Xây dựng giao diện trình bày danh mục tài sản, sơ đồ quan hệ và báo cáo tổng hợp bề mặt tấn công bên ngoài
+- Thử nghiệm hệ thống trên bộ dữ liệu mẫu hoặc hệ thống được cho phép; đánh giá độ chính xác của việc phát hiện tài sản và liên kết thông tin so với kết quả kiểm tra thủ công
+
+codex --sandbox danger-full-access --ask-for-approval never

@@ -1,0 +1,405 @@
+{
+  "result": "passed",
+  "curl_requests": 61,
+  "covered_routes": [
+    "DELETE /api/projects/{project_id}",
+    "GET /",
+    "GET /api/health",
+    "GET /api/projects",
+    "GET /api/projects/{project_id}",
+    "GET /api/projects/{project_id}/assets",
+    "GET /api/projects/{project_id}/assets/{asset_id}",
+    "GET /api/projects/{project_id}/claims/{relationship_id}",
+    "GET /api/projects/{project_id}/graph",
+    "GET /api/projects/{project_id}/relationships",
+    "GET /api/projects/{project_id}/report.csv",
+    "GET /api/projects/{project_id}/report.html",
+    "GET /api/projects/{project_id}/report.json",
+    "GET /api/projects/{project_id}/runs",
+    "GET /api/projects/{project_id}/runs/{run_id}",
+    "GET /api/projects/{project_id}/social",
+    "GET /api/projects/{project_id}/sources/{source_id}",
+    "PATCH /api/projects/{project_id}/assets/{asset_id}",
+    "PATCH /api/projects/{project_id}/claims/{relationship_id}",
+    "POST /api/demo/load",
+    "POST /api/projects",
+    "POST /api/projects/{project_id}/claims/{relationship_id}/evidence",
+    "POST /api/projects/{project_id}/collect",
+    "PUT /api/projects/{project_id}"
+  ],
+  "api_route_count": 23,
+  "checks": [
+    {
+      "method": "GET",
+      "path": "/api/health",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/openapi.json",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/docs",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/redoc",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/demo/load",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/prj_de272591565e",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/prj_de272591565e/assets",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/prj_de272591565e/assets?q=app.acme&asset_type=host&status=related&source=facebook",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/prj_de272591565e/assets/ast_33882eac336f",
+      "status": 200
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/projects/prj_de272591565e/assets/ast_33882eac336f",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/prj_de272591565e/assets/ast_33882eac336f",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/prj_de272591565e/sources/src_6ef0640f7370",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/prj_de272591565e/social",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/prj_de272591565e/relationships",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/prj_de272591565e/graph",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/prj_de272591565e/claims/rel_bed77668fe59",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/projects/prj_de272591565e/claims/rel_bed77668fe59/evidence",
+      "status": 200
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/projects/prj_de272591565e/claims/rel_bed77668fe59",
+      "status": 200
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/projects/prj_de272591565e/claims/rel_bed77668fe59",
+      "status": 200
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/projects/prj_de272591565e/claims/rel_bed77668fe59",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/projects/prj_de272591565e/collect",
+      "status": 202
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/prj_de272591565e/runs/run_78e2d3fc2b4f",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/prj_de272591565e/runs",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/prj_de272591565e/claims/rel_bed77668fe59",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/prj_de272591565e/report.json",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/prj_de272591565e/report.html",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/prj_de272591565e/report.csv",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/projects/prj_de272591565e/collect",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/projects/prj_de272591565e/collect",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/projects",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/prj_bec5071140f6",
+      "status": 200
+    },
+    {
+      "method": "PUT",
+      "path": "/api/projects/prj_bec5071140f6",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/projects",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/projects/prj_f2a10b829dac/collect",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/projects",
+      "status": 422
+    },
+    {
+      "method": "POST",
+      "path": "/api/projects",
+      "status": 400
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/projects/prj_de272591565e/claims/rel_bed77668fe59",
+      "status": 422
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/missing",
+      "status": 404
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/missing/assets",
+      "status": 404
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/missing/social",
+      "status": 404
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/missing/relationships",
+      "status": 404
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/missing/graph",
+      "status": 404
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/missing/runs",
+      "status": 404
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/missing/report.json",
+      "status": 404
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/missing/report.html",
+      "status": 404
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/missing/report.csv",
+      "status": 404
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/missing/claims/missing",
+      "status": 404
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/missing/assets/missing",
+      "status": 404
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/missing/sources/missing",
+      "status": 404
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/missing/runs/missing",
+      "status": 404
+    },
+    {
+      "method": "POST",
+      "path": "/api/projects/missing/collect",
+      "status": 404
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/projects/prj_de272591565e/claims/missing",
+      "status": 404
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/projects/missing",
+      "status": 404
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/projects/prj_bec5071140f6",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/prj_bec5071140f6",
+      "status": 404
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/projects/prj_f2a10b829dac",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/prj_f2a10b829dac",
+      "status": 404
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/projects/prj_de272591565e",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/prj_de272591565e",
+      "status": 404
+    }
+  ],
+  "network_scope": "Local server and private-target rejection only. External collectors are tested with fixtures.",
+  "split_port_checks": [
+    {
+      "port": 2222,
+      "method": "GET",
+      "path": "/",
+      "status": 200
+    },
+    {
+      "port": 2222,
+      "method": "GET",
+      "path": "/styles.css",
+      "status": 200
+    },
+    {
+      "port": 2222,
+      "method": "GET",
+      "path": "/extra.css",
+      "status": 200
+    },
+    {
+      "port": 2222,
+      "method": "GET",
+      "path": "/app.js",
+      "status": 200
+    },
+    {
+      "port": 2222,
+      "method": "GET",
+      "path": "/config.js",
+      "status": 200
+    },
+    {
+      "port": 2222,
+      "method": "GET",
+      "path": "/api/projects",
+      "status": 404
+    },
+    {
+      "port": 3333,
+      "method": "GET",
+      "path": "/static/app.js",
+      "status": 404
+    },
+    {
+      "port": 3333,
+      "method": "OPTIONS",
+      "path": "/api/projects",
+      "status": 200
+    },
+    {
+      "port": 3333,
+      "method": "OPTIONS",
+      "path": "/api/projects",
+      "status": 200
+    },
+    {
+      "port": 3333,
+      "method": "OPTIONS",
+      "path": "/api/projects",
+      "status": 400
+    }
+  ],
+  "split_curl_requests": 10,
+  "total_curl_checks": 71,
+  "frontend_url": "http://127.0.0.1:2222",
+  "backend_url": "http://127.0.0.1:3333"
+}

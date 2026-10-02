@@ -1,0 +1,337 @@
+{
+  "result": "passed",
+  "curl_requests": 55,
+  "scope": "FE assets, BE schema/health/CORS and rejected setup input; no project changes",
+  "checks": [
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/styles.css",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/extra.css",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/app.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/config.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/font-1.ttf",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/font-2.ttf",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/font-3.ttf",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/font-4.ttf",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/font-5.ttf",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/font-6.ttf",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/font-7.ttf",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/fonts.css",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/img1.svg",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/img17Transfer.svg",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/imgChipCard.png",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/imgChipCard1.png",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/imgEllipse10.svg",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/imgEllipse13.svg",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/imgEllipse14.svg",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/imgGroup10.svg",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/imgGroup11.svg",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/imgGroup12.svg",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/imgGroup13.svg",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/imgGroup14.svg",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/imgGroup15.svg",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/imgGroup17.svg",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/imgGroup17Mobile.svg",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/imgGroup18.svg",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/imgGroup18Mobile.svg",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/imgGroup4.svg",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/imgGroup5.svg",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/imgGroup6.svg",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/imgGroup7.svg",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/imgGroup8.svg",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/imgGroup9.svg",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/imgHome2.svg",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/imgIconfinderVector65094737921.png",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/imgLayer11.svg",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/imgLayerX00201.svg",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/imgPaypalPaymentPay.svg",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/imgPexelsChristinaMorillo11816902.png",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/imgSettingsSolid1.svg",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/imgUser31.svg",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/Inter-LICENSE.txt",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/assets/Lato-LICENSE.txt",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 3333,
+      "path": "/",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "port": 3333,
+      "path": "/openapi.json",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "port": 3333,
+      "path": "/api/projects/setup",
+      "status": 422
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/api/projects",
+      "status": 404
+    },
+    {
+      "method": "GET",
+      "port": 2222,
+      "path": "/.env",
+      "status": 404
+    },
+    {
+      "method": "GET",
+      "port": 3333,
+      "path": "/static/app.js",
+      "status": 404
+    },
+    {
+      "method": "OPTIONS",
+      "port": 3333,
+      "path": "/api/projects",
+      "status": 200
+    },
+    {
+      "method": "OPTIONS",
+      "port": 3333,
+      "path": "/api/projects",
+      "status": 200
+    },
+    {
+      "method": "OPTIONS",
+      "port": 3333,
+      "path": "/api/projects",
+      "status": 400
+    }
+  ]
+}

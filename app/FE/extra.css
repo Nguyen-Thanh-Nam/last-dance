@@ -1,0 +1,6 @@
+/* Interaction details shared by inventory and evidence views. */
+.primary,.secondary,.navItem,.projectItem{transition:background .15s,color .15s,box-shadow .15s}
+.sourceHash{display:block;max-width:280px;overflow:hidden;text-overflow:ellipsis;font-family:ui-monospace,monospace;font-size:11px}
+.formError{color:#b4233e;background:#fff0f3;padding:12px;border-radius:12px;font-size:13px;margin-top:15px}
+#setupDomain{width:100%}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}

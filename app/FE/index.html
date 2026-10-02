@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Surface Map AI — Overview</title>
+  <link rel="stylesheet" href="./styles.css?v=12" />
+  <link rel="stylesheet" href="./extra.css?v=5" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#overview"><img src="./assets/imgIconfinderVector65094737921.png" alt="" width="36" height="36" /><strong>SurfaceMap.</strong></a>
+    <div class="headerMain">
+      <button class="mobileMenu" id="menuBtn" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+      <h1 id="pageTitle">Overview</h1>
+      <label class="headerSearch"><img src="./assets/imgGroup6.svg" alt="" /><input id="globalSearch" placeholder="Search for an asset" aria-label="Search for an asset" /></label>
+      <div class="headerActions">
+        <button id="headerSettings" class="iconButton" aria-label="Project settings"><img src="./assets/imgGroup4.svg" alt="" /></button>
+        <button id="notificationsBtn" class="iconButton" aria-label="View claims needing review"><img src="./assets/imgGroup5.svg" alt="" /></button>
+        <button id="profileBtn" class="avatar" aria-label="Choose a project"><img src="./assets/imgPexelsChristinaMorillo11816902.png" alt="" /></button>
+      </div>
+    </div>
+  </header>
+  <main class="layout">
+    <aside class="sidebar" id="sidebar">
+      <nav aria-label="Main navigation"><a class="navItem active" href="#overview"><span class="navIcon"><img src="./assets/imgHome2.svg" alt="" /></span><span>Overview</span></a>
+<a class="navItem " href="#assetsSection"><span class="navIcon"><img src="./assets/img17Transfer.svg" alt="" /></span><span>Assets</span></a>
+<a class="navItem " href="#relationshipsSection"><span class="navIcon"><img src="./assets/imgUser31.svg" alt="" /></span><span>Relationships</span></a>
+<a class="navItem " href="#sourcesSection"><span class="navIcon"><img src="./assets/imgLayer11.svg" alt="" /></span><span>Sources</span></a>
+<a class="navItem " href="#reportsSection"><span class="navIcon"><img src="./assets/imgGroup13.svg" alt="" /></span><span>Reports</span></a>
+<a class="navItem " href="#collectionSection"><span class="navIcon"><img src="./assets/imgGroup14.svg" alt="" /></span><span>Collection</span></a>
+<a class="navItem " href="#socialSection"><span class="serviceIcon"><img class="servicePart part7" src="./assets/imgGroup7.svg" alt="" /><img class="servicePart part8" src="./assets/imgGroup8.svg" alt="" /><img class="servicePart part9" src="./assets/imgGroup9.svg" alt="" /><img class="servicePart part10" src="./assets/imgGroup10.svg" alt="" /><img class="servicePart part11" src="./assets/imgGroup11.svg" alt="" /><img class="servicePart part12" src="./assets/imgGroup12.svg" alt="" /></span><span>Social accounts</span></a>
+<a class="navItem " href="#workspaceSection"><span class="navIcon"><img src="./assets/imgGroup15.svg" alt="" /></span><span>Projects</span></a>
+<button class="navItem" id="navSettings"><span class="navIcon"><img src="./assets/imgSettingsSolid1.svg" alt="" /></span><span>Settings</span></button></nav>
+      <section class="workspace" id="workspaceSection"><h2>Your projects</h2><button id="newProjectBtn" class="primary full">+ Thêm domain</button><div id="projectList"></div></section>
+      <div class="sidebarFoot"><span class="onlineDot"></span> Evidence-backed discovery</div>
+    </aside>
+    <section class="content" id="overview">
+      <div id="runMessage" class="notice" role="status" hidden></div>
+      <div id="emptyState" class="empty"><div class="emptyIcon">◎</div><h1>Bắt đầu từ một domain.</h1><p>Nhập domain. Hệ thống tự thu thập dữ liệu, phân tích AI và tạo danh mục có chứng cứ.</p><button id="startProjectBtn" class="primary">Nhập domain</button> <button id="emptyDemoBtn" class="secondary">Explore demo</button></div>
+      <div id="appView" hidden>
+        <div class="overviewGrid">
+          <section class="cardSection"><div class="sectionTitle"><h2>My inventory</h2><a href="#assetsSection">See all</a></div><div id="stats" class="stats"></div></section>
+          <section class="recentSection"><div class="sectionTitle"><h2>Recent observations</h2></div><div id="recentActivity" class="recentCard"></div></section>
+          <section class="activitySection"><div class="sectionTitle"><h2>Discovery activity</h2><span class="muted">Last 7 days</span></div><div class="chartCard"><div class="chartLegend"><span><i class="legendDot teal"></i>Assets</span><span><i class="legendDot blue"></i>Sources</span></div><div id="activityChart" class="activityChart"></div></div></section>
+          <section class="breakdownSection"><div class="sectionTitle"><h2>Asset statistics</h2></div><div class="chartCard breakdownCard" id="assetBreakdown"></div></section>
+        </div>
+        <div class="lowerGrid">
+          <section class="quickSection"><div class="sectionTitle"><h2>Quick actions</h2></div><div class="quickCard"><div class="quickIntro"><span class="actionOrb">↗</span><div><strong>Keep your inventory current</strong><p>Collect only within your declared scope.</p></div></div><div class="quickButtons"><button id="collectBtn" class="primary">Run collection <span>→</span></button><button id="fullCollectBtn" class="secondary">Full collection</button><button id="demoBtn" class="secondary">Load demo</button></div></div></section>
+          <section class="historySection"><div class="sectionTitle"><h2>Observation history</h2></div><div class="chartCard historyCard" id="historyChart"></div></section>
+        </div>
+        <div class="projectHead" id="reportsSection"><div><div class="eyebrow" id="projectMode"></div><h1 id="projectName"></h1><p id="projectMeta" class="muted"></p></div><div class="actions"><button id="editProjectBtn" class="secondary">Edit project / scope</button><a id="jsonLink" class="button secondary">JSON report</a><a id="csvLink" class="button secondary">CSV assets</a><a id="htmlLink" class="button secondary">HTML report</a><button id="deleteProjectBtn" class="danger">Delete project</button></div></div>
+        <section class="panel" id="assetsSection"><div class="panelHead"><h2>Assets</h2><div class="filters"><select id="assetClass"><option value="">All classifications</option><option>controlled</option><option>third_party</option><option>candidate</option><option>insufficient_evidence</option><option>rejected</option></select><select id="assetConfidence"><option value="0">All confidence ranks</option><option value="0.8">Rank ≥ 0.8</option><option value="0.5">Rank ≥ 0.5</option></select><input id="assetSeenAfter" type="datetime-local" aria-label="Observed after" /><input id="assetSource" placeholder="Filter source" /><input id="assetSearch" placeholder="Search assets" /><select id="assetType"><option value="">All types</option></select><select id="assetStatus"><option value="">All statuses</option><option>confirmed</option><option>related</option><option>discovered</option><option>needs_review</option></select></div></div><div class="tableWrap"><table><thead><tr><th>Type</th><th>Value</th><th>Status</th><th>Source</th></tr></thead><tbody id="assetRows"></tbody></table></div></section><section class="panel" id="graphSection"><div class="panelHead"><h2>Relationship map</h2><span class="legend"><i class="dot confirmed"></i> confirmed <i class="dot related"></i> related <i class="dot needs_review"></i> needs review</span></div><div class="filters"><select id="graphStatus"><option value="">All relations</option><option>confirmed</option><option>related</option><option>needs_review</option><option>rejected</option></select><select id="graphDepth"><option value="0">All depths</option><option value="1">Depth 1 from organization</option><option value="2">Depth 2 from organization</option></select></div><div id="graph" class="graph"></div></section><section class="panel" id="relationshipsSection"><div class="panelHead"><h2>Evidence-backed relationships</h2><select id="relationshipStatus" aria-label="Filter relationships"><option value="">All statuses</option><option>confirmed</option><option>related</option><option>needs_review</option><option>rejected</option></select></div><div class="tableWrap"><table><thead><tr><th>Subject</th><th>Relationship</th><th>Object</th><th>Class</th><th>Status</th><th>Confidence</th><th>Source</th></tr></thead><tbody id="relationshipRows"></tbody></table></div></section>
+        <section class="panel" id="sourcesSection"><div class="panelHead"><h2>Saved sources</h2><span class="muted">Snapshots with traceable evidence</span></div><div class="tableWrap"><table><thead><tr><th>Source</th><th>Collected</th><th>Snapshot hash</th></tr></thead><tbody id="sourcesRows"></tbody></table></div></section><section class="panel" id="sourcePanel" hidden><h2>Source snapshot</h2><div id="sourceContent"></div></section><section class="panel" id="collectionSection"><div class="panelHead"><h2>Collection logs</h2><span class="muted">Each collector is isolated; errors do not discard other records.</span></div><div class="tableWrap"><table><thead><tr><th>Collector</th><th>Status</th><th>Records</th><th>Duration</th><th>Message</th></tr></thead><tbody id="collectorRows"></tbody></table></div></section>
+        <section class="panel" id="socialSection"><div class="panelHead"><h2>Brands and public social accounts</h2><span class="muted">Platform pages are verified only with source-backed links or explicit manual evidence.</span></div><div class="tableWrap"><table><thead><tr><th>Platform</th><th>Profile</th><th>Verification</th><th>Reason</th></tr></thead><tbody id="socialRows"></tbody></table></div></section>
+        <section id="assetPanel" class="panel" hidden><h2>Asset observations</h2><div id="assetContent"></div></section><section id="claimPanel" class="panel claim" hidden><h2>Claim detail</h2><div id="claimContent"></div></section>
+      </div>
+    </section>
+  </main>
+  <dialog id="projectDialog"><form method="dialog" id="projectForm"><h2>New project</h2><label>Organization name<input name="organization_name" required value="Example Organization" /></label><label>Official website<input name="official_website" required value="https://example.org/" /></label><label>Root domain<input name="root_domain" placeholder="example.org" /></label><label>Allowed domains<input name="allowed_domains" required value="example.org" /><small>Comma separated; subdomains are allowed.</small></label><label>Aliases<input name="aliases" placeholder="Example, Example Labs" /></label><label>Brands<input name="brands" placeholder="Example Labs" /></label><label>Known social accounts (JSON)<textarea name="known_social_accounts" placeholder='[{"platform":"github","url":"https://github.com/example"}]'></textarea></label><label>Authorized assets (comma separated)<input name="authorized_assets" placeholder="https://app.example.org" /></label><label>Authorized scopes (JSON)<textarea name="authorized_scopes" placeholder='[{"kind":"hostname","value":"app.example.org","allowed_tests":["http","tls"]}]'></textarea><small>Active checks require explicit hosts or scopes. Empty scope blocks active checks.</small></label><label>Mode<select name="mode"><option value="passive">passive</option><option value="authorized">authorized</option></select></label><label>Notes<textarea name="notes"></textarea></label><div class="dialogActions"><button type="button" id="cancelProjectBtn" value="cancel" class="secondary">Cancel</button><button value="default" class="primary">Create</button></div></form></dialog>
+
+  <dialog id="setupDialog" aria-labelledby="setupTitle">
+    <form id="domainSetupForm">
+      <h2 id="setupTitle">Thêm domain</h2>
+      <p class="muted">Hệ thống tự tạo project, thu thập dữ liệu và phân tích AI.</p>
+      <label for="setupDomain">Domain</label>
+      <input id="setupDomain" name="domain" placeholder="example.org" required maxlength="320" autocomplete="off" autocapitalize="none" spellcheck="false" autofocus />
+      <p id="setupError" class="formError" role="alert" hidden></p>
+      <div class="dialogActions"><button type="button" id="cancelSetupBtn" class="secondary">Hủy</button><button id="setupSubmit" type="submit" class="primary">Bắt đầu</button></div>
+    </form>
+  </dialog>
+  <script src="./config.js?v=1"></script>
+  <script src="./app.js?v=13"></script>
+</body>
+</html>

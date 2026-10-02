@@ -1,0 +1,33 @@
+[project]
+name = "surface-map-ai"
+version = "0.2.0"
+description = "Evidence-backed external attack surface discovery MVP"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.115,<1",
+  "uvicorn[standard]>=0.30,<1",
+  "pydantic>=2.7,<3",
+  "python-multipart>=0.0.9,<1",
+  "dnspython>=2.7,<3",
+  "publicsuffix2==2.20191221",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["BE"]
+include = ["app*"]
+exclude = ["tests*", "data*", "docs*"]
+
+[project.optional-dependencies]
+test = ["pytest>=8,<9", "httpx>=0.27,<1"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+pythonpath = ["BE", "."]
