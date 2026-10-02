@@ -12,6 +12,8 @@ class Settings:
     ai_base_url: str = os.getenv("AI_BASE_URL", "")
     ai_api_key: str = os.getenv("AI_API_KEY", "")
     ai_model: str = os.getenv("AI_MODEL", "")
+    google_cse_api_key: str = os.getenv("GOOGLE_CSE_API_KEY", "")
+    google_cse_id: str = os.getenv("GOOGLE_CSE_ID", "")
     max_crawl_pages: int = int(os.getenv("MAX_CRAWL_PAGES", "12"))
     max_crawl_depth: int = int(os.getenv("MAX_CRAWL_DEPTH", "2"))
     request_delay_seconds: float = float(os.getenv("REQUEST_DELAY_SECONDS", "0.25"))

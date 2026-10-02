@@ -1,6 +1,6 @@
 # Kiểm tra giao diện — 02/10/2026
 
-Các thao tác và ảnh dưới đây thuộc giao diện cũ trước khi tách server và sửa theo BankDash/setup một domain. Bản mới đã qua 101 test BE, 63 curl checks API, 17 curl checks setup, 55 curl checks FE/CORS/schema và kiểm tra logic Node với DOM stub; xem [FIGMA.md](FIGMA.md) và [DOMAIN_SETUP.md](DOMAIN_SETUP.md). Browser vẫn bị saved user permission setting chặn localhost:2222 ở lượt trước, kể cả sau khi người dùng xác nhận bật quyền. Chưa kiểm tra layout/tương tác trong trình duyệt của bản mới; không coi ảnh cũ là bằng chứng bản mới.
+Các thao tác và ảnh dưới đây thuộc giao diện cũ trước khi tách server và sửa theo BankDash/setup một domain. Bản mới đã qua 103 test BE, 63 curl checks API, 18 curl checks setup, 55 curl checks FE/CORS/schema và kiểm tra logic Node với DOM stub; xem [FIGMA.md](FIGMA.md), [DOMAIN_SETUP.md](DOMAIN_SETUP.md) và [GOOGLE_DORK.md](GOOGLE_DORK.md). Browser vẫn bị saved user permission setting chặn localhost:2222 ở lượt trước, kể cả sau khi người dùng xác nhận bật quyền. Chưa kiểm tra layout/tương tác trong trình duyệt của bản mới; không coi ảnh cũ là bằng chứng bản mới.
 
 Kiểm tra bằng trình duyệt in-app trên server localhost với SQLite riêng `runtime/browser-check.db`, provider `rules-demo` và dữ liệu Acme tổng hợp. Không dùng model trả phí hoặc thu thập tổ chức thật trong lượt kiểm tra này.
 

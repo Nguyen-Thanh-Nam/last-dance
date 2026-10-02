@@ -1,6 +1,6 @@
 {
   "result": "passed",
-  "curl_requests": 17,
+  "curl_requests": 18,
   "scope": "Isolated fixture server and temporary DB; no external collection or paid AI calls",
   "checks": [
     {
@@ -15,47 +15,52 @@
     },
     {
       "method": "GET",
-      "path": "/api/projects/prj_b19b8bbbaa97/runs/run_6ddbcb61709f",
+      "path": "/api/projects/prj_5170cad7cd1d/runs/run_95dc415c2c7c",
       "status": 200
     },
     {
       "method": "GET",
-      "path": "/api/projects/prj_b19b8bbbaa97",
+      "path": "/api/projects/prj_5170cad7cd1d/runs/run_95dc415c2c7c",
       "status": 200
     },
     {
       "method": "GET",
-      "path": "/api/projects/prj_b19b8bbbaa97/assets",
+      "path": "/api/projects/prj_5170cad7cd1d",
       "status": 200
     },
     {
       "method": "GET",
-      "path": "/api/projects/prj_b19b8bbbaa97/relationships",
+      "path": "/api/projects/prj_5170cad7cd1d/assets",
       "status": 200
     },
     {
       "method": "GET",
-      "path": "/api/projects/prj_b19b8bbbaa97/social",
+      "path": "/api/projects/prj_5170cad7cd1d/relationships",
       "status": 200
     },
     {
       "method": "GET",
-      "path": "/api/projects/prj_b19b8bbbaa97/sources/src_2add481ede15",
+      "path": "/api/projects/prj_5170cad7cd1d/social",
       "status": 200
     },
     {
       "method": "GET",
-      "path": "/api/projects/prj_b19b8bbbaa97/report.json",
+      "path": "/api/projects/prj_5170cad7cd1d/sources/src_1fecf7035186",
       "status": 200
     },
     {
       "method": "GET",
-      "path": "/api/projects/prj_b19b8bbbaa97/report.html",
+      "path": "/api/projects/prj_5170cad7cd1d/report.json",
       "status": 200
     },
     {
       "method": "GET",
-      "path": "/api/projects/prj_b19b8bbbaa97/report.csv",
+      "path": "/api/projects/prj_5170cad7cd1d/report.html",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/projects/prj_5170cad7cd1d/report.csv",
       "status": 200
     },
     {

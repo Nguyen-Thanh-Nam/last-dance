@@ -1,1 +1,1 @@
-PASS: frontend cards/charts, search, claims/sources, one-domain setup, automatic collection tracking, reload resume, API errors, port 3333 and local assets.
+PASS: frontend cards/charts, search, claims/sources, Google Dork links, one-domain setup, automatic collection tracking, reload resume, API errors, port 3333 and local assets.

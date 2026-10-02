@@ -4,14 +4,14 @@ import time
 from typing import Any
 
 from .ai.service import run_ai_enrichment
-from .collectors import AuthorizedHttpCollector, CertificateTransparencyCollector, CollectorContext, DnsCollector, PassiveWebCollector, RdapCollector, SocialOSINTCollector
+from .collectors import AuthorizedHttpCollector, CertificateTransparencyCollector, CollectorContext, DnsCollector, GoogleDorkCollector, PassiveWebCollector, RdapCollector, SocialOSINTCollector
 from .config import settings
 from .db import db_session, get_project, make_id, now_iso, row_or_none, rows
 from .db import current_run_id
 from .collectors.tls import TlsCollector
 
 
-PASSIVE_COLLECTORS = ["passive_web", "dns", "certificate_transparency", "rdap", "social_osint", "ai"]
+PASSIVE_COLLECTORS = ["passive_web", "dns", "certificate_transparency", "rdap", "google_dork", "social_osint", "ai"]
 
 
 def collectors_for_profile(project: dict[str, Any], profile: str, requested: list[str] | None = None) -> list[str]:
@@ -44,7 +44,7 @@ def _run_collection(project_id: str, collector_names: list[str], demo: bool, pro
         db.execute("INSERT INTO collection_runs(id, project_id, status, started_at, config_json) VALUES(?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET status='running'", (run_id, project_id, "running", started, __import__("json").dumps({"collectors": collector_names, "profile": profile, "demo": demo, "max_pages": settings.max_crawl_pages, "max_depth": settings.max_crawl_depth, "request_delay_seconds": settings.request_delay_seconds, "allowed_domains": project["allowed_domains"], "authorized_assets": project.get("authorized_assets", []), "authorized_scopes": project.get("authorized_scopes", [])})))
         db.commit()
         context = CollectorContext(db, project, run_id, settings.max_crawl_pages, settings.max_crawl_depth, settings.request_delay_seconds)
-        registry = {"passive_web": PassiveWebCollector(), "dns": DnsCollector(), "certificate_transparency": CertificateTransparencyCollector(), "rdap": RdapCollector(), "social_osint": SocialOSINTCollector(), "authorized_http": AuthorizedHttpCollector(), "tls": TlsCollector()}
+        registry = {"passive_web": PassiveWebCollector(), "dns": DnsCollector(), "certificate_transparency": CertificateTransparencyCollector(), "rdap": RdapCollector(), "google_dork": GoogleDorkCollector(), "social_osint": SocialOSINTCollector(), "authorized_http": AuthorizedHttpCollector(), "tls": TlsCollector()}
         result_rows: list[dict[str, Any]] = []
         errors = 0
         for name in collector_names:

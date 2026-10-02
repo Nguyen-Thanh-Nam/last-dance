@@ -17,7 +17,7 @@ Giao diện đã được bổ sung form setup một domain theo yêu cầu ti�
 
 | Kiểm tra | Kết quả | File |
 |---|---|---|
-| BE regression | 101 passed; một warning dependency hiện có | `pytest.txt`, `pytest.xml` |
+| BE regression | 103 passed; một warning dependency hiện có | `pytest.txt`, `pytest.xml` |
 | API bằng curl trên DB tạm | 63 request assertions đạt, bao phủ đủ 24 API method-route | `curl-results.json`, `curl.txt` |
 | FE và CORS/schema bằng curl, hai server đang chạy | 55 kiểm tra không thay đổi project đạt; nội dung HTTP của CSS/JS/icon/font khớp file trên đĩa | `figma-frontend-curl.json`, `figma-frontend-curl.txt` |
 | Logic FE trong Node với DOM stub và snapshot demo riêng | Khởi tạo, dữ liệu charts/cards, project rỗng, tìm kiếm, lọc claim, escape source, ID và assets đạt | `frontend-logic.txt` |

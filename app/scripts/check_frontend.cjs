@@ -56,6 +56,9 @@ vm.createContext(sandbox);vm.runInContext(fs.readFileSync(path.join(root,'FE/app
   assert(!elements.get('sourceContent').innerHTML.includes('No textual content'));
   assert(elements.get('sourceContent').innerHTML.includes('&lt;'),'Raw HTML snapshot should be escaped');
   assert(elements.get('sourcePanel').scrolled);
+  vm.runInContext(`state.project={...state.project,collector_logs:[{collector:'google_dork',status:'skipped',records_count:0,duration_ms:0,message:'API unavailable. GOOGLE_DORK_LINKS:'+JSON.stringify([{query:'site:acme.example filetype:pdf',url:'https://www.google.com/search?q=site%3Aacme.example+filetype%3Apdf'},{query:'unsafe',url:'https://evil.example/search'}])}]};renderCollectorLogs();`,sandbox);
+  assert(elements.get('collectorRows').innerHTML.includes('https://www.google.com/search?q=site%3Aacme.example+filetype%3Apdf'),'Google Dork fallback should show a clickable Google query');
+  assert(elements.get('collectorRows').innerHTML.includes('href="#" target="_blank" rel="noreferrer">unsafe</a>'),'Dork links must reject non-Google hosts');
   vm.runInContext('state.project={...state.project,assets:[],relationships:[],sources:[],observations:[]};renderStats();renderDashboard();',sandbox);
   assert(elements.get('recentActivity').innerHTML.includes('No observations yet.'));
   assert(elements.get('sourcesRows').innerHTML.includes('No saved sources.'));
@@ -95,5 +98,5 @@ vm.createContext(sandbox);vm.runInContext(fs.readFileSync(path.join(root,'FE/app
   for(const file of [...html.matchAll(/(?:src|href)="\.\/([^"?#]+)(?:\?[^"#]*)?"/g)].map(m=>m[1])){
     const full=path.join(root,'FE',file);assert(fs.statSync(full).size>0,file);
   }
-  console.log('PASS: frontend cards/charts, search, claims/sources, one-domain setup, automatic collection tracking, reload resume, API errors, port 3333 and local assets.');
+  console.log('PASS: frontend cards/charts, search, claims/sources, Google Dork links, one-domain setup, automatic collection tracking, reload resume, API errors, port 3333 and local assets.');
 })().catch(error=>{console.error(error);process.exitCode=1;});

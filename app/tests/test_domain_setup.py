@@ -10,6 +10,7 @@ from app.jobs import worker
 from app.db import db_session
 from app.collectors.base import CollectorResult
 from app.collectors.social import SocialOSINTCollector
+from app.collectors.google_dork import GoogleDorkCollector, dork_queries
 
 
 @pytest.fixture
@@ -41,7 +42,7 @@ def test_domain_alone_creates_and_queues(queued_client, entered, host, root, sco
     run = queued_client.get(f"/api/projects/{project['id']}/runs/{result['collection']['run_id']}").json()
     assert run["status"] == "queued"
     config = json.loads(run["config_json"])
-    assert config["collectors"] == ["passive_web", "dns", "certificate_transparency", "rdap", "social_osint", "ai"]
+    assert config["collectors"] == ["passive_web", "dns", "certificate_transparency", "rdap", "google_dork", "social_osint", "ai"]
     assert config["demo"] is False
 
 
@@ -101,6 +102,8 @@ def test_setup_runs_collectors_social_discovery_and_ai_automatically(monkeypatch
         snapshot = client.get(prefix).json()
         assert snapshot["assets"] and snapshot["sources"] and snapshot["relationships"]
         assert snapshot["model_runs"][0]["provider"] == "rules-demo"
+        dork_log = next(log for log in run["collectors"] if log["collector"] == "google_dork")
+        assert dork_log["status"] == "skipped" and "GOOGLE_DORK_LINKS:" in dork_log["message"]
         accounts = snapshot["social_accounts"]
         assert len(accounts) == 1
         assert accounts[0]["profile_url"] == "https://www.facebook.com/AcmeRobotics"
@@ -118,3 +121,54 @@ def test_social_discovery_ignores_out_of_scope_snapshot(queued_client):
         collected = SocialOSINTCollector().collect(CollectorContext(db, project, "test", 1, 0, 0))
         assert collected.status == "skipped"
         assert db.execute("SELECT COUNT(*) FROM social_accounts").fetchone()[0] == 0
+
+
+def test_google_dork_without_api_creates_scoped_search_links(queued_client):
+    result = queued_client.post("/api/projects/setup", json={"domain": "acme.example"}).json()
+    from app.db import get_project
+    from app.collectors.base import CollectorContext
+    with db_session() as db:
+        project = get_project(db, result["project"]["id"])
+        collected = GoogleDorkCollector().collect(CollectorContext(db, project, "test"))
+        assert collected.status == "skipped"
+        assert "GOOGLE_DORK_LINKS:" in collected.message
+        queries = dork_queries(project["root_domain"])
+        assert len(queries) == 4
+        assert all(query.startswith("site:acme.example ") for query in queries)
+        assert "password" not in " ".join(queries).casefold()
+
+
+def test_google_dork_api_saves_only_in_scope_results(queued_client, monkeypatch):
+    from app.config import settings
+    from app.db import get_project
+    from app.collectors.base import CollectorContext
+
+    object.__setattr__(settings, "google_cse_api_key", "test-key")
+    object.__setattr__(settings, "google_cse_id", "test-engine")
+    payload = json.dumps({"items": [
+        {"title": "Docs", "link": "https://docs.acme.example/api", "snippet": "Public API docs for Acme."},
+        {"title": "Out of scope", "link": "https://outside.example/private", "snippet": "Must be discarded."},
+    ]}).encode()
+
+    class Response:
+        def __enter__(self): return self
+        def __exit__(self, *_args): return False
+        def read(self): return payload
+
+    requests = []
+    def fake_urlopen(request, timeout):
+        requests.append((request.full_url, timeout))
+        return Response()
+
+    monkeypatch.setattr("app.collectors.google_dork.urlopen", fake_urlopen)
+    result = queued_client.post("/api/projects/setup", json={"domain": "acme.example"}).json()
+    with db_session() as db:
+        project = get_project(db, result["project"]["id"])
+        collected = GoogleDorkCollector().collect(CollectorContext(db, project, "test"))
+        assert collected.status == "ok"
+        assert collected.records_count == 4
+        assert len(requests) == 4
+        assert all("key=test-key" in url and "cx=test-engine" in url for url, _timeout in requests)
+        assert db.execute("SELECT COUNT(*) FROM sources WHERE source_type='google_dork'").fetchone()[0] == 4
+        assert db.execute("SELECT COUNT(*) FROM assets WHERE canonical_value LIKE '%outside.example%'").fetchone()[0] == 0
+        assert db.execute("SELECT COUNT(*) FROM assets WHERE canonical_value LIKE '%docs.acme.example%'").fetchone()[0] >= 1

@@ -27,7 +27,7 @@ Kết luận: phần mềm đã có luồng MVP chạy được và kiểm thử
 
 ## Kết quả xác minh
 
-Lượt cuối sau khi bổ sung setup một domain: **101 test tự động đạt; 63 curl checks API, 17 curl checks setup và 55 curl checks FE/CORS/schema đạt, bao phủ 24 API**. Lượt trước có 71 curl checks trên Windows/Docker. Xem [tổng hợp bằng chứng](verification/SUMMARY.md) và [luồng setup một domain](verification/DOMAIN_SETUP.md).
+Lượt trước khi thêm Google Dork: **101 test tự động đạt; 63 curl checks API, 17 curl checks setup và 55 curl checks FE/CORS/schema đạt, bao phủ 24 API**. Bổ sung Dork được test riêng trong [tài liệu xác minh](verification/GOOGLE_DORK.md). Xem [tổng hợp bằng chứng](verification/SUMMARY.md) và [luồng setup một domain](verification/DOMAIN_SETUP.md) để biết kết quả mới nhất.
 
 Số lượng và trạng thái chạy cuối cùng nằm trong `docs/verification/pytest.txt`, `pytest.xml`, `curl-results.json` và `evaluation.json`. Curl runner đối chiếu danh sách route OpenAPI để tránh bỏ sót endpoint. Có kiểm tra 200/202/400/404/409/422, project isolation, queue, export, review, source/observation hashes và chặn private target. Unit/integration tests dùng fixture cho DNS/CT/RDAP/TLS/AI; chưa gọi mọi nguồn OSINT ngoài Internet hoặc trả phí cho model thật.
 

@@ -45,11 +45,13 @@ BE: http://127.0.0.1:3333. FE: http://127.0.0.1:2222. Chạy Swagger tại `http
 ## Ví dụ collect
 
 ```json
-{"collectors":["passive_web","dns","certificate_transparency","social_osint","ai"],"profile":"standard","background":true,"demo":false}
+{"collectors":["passive_web","dns","certificate_transparency","google_dork","social_osint","ai"],"profile":"standard","background":true,"demo":false}
 ```
 
 Profile full thêm authorized_http và tls chỉ khi mode=authorized. Mỗi kiểm tra chủ động vẫn cần scope riêng. `demo=true` trong collect bỏ qua collector mạng; `/api/demo/load` nạp fixture đầy đủ offline, luôn dùng rules-demo.
 
 Social collector tự phát hiện tối đa 20 profile URL từ website snapshot trong scope và kết hợp với các record đã khai báo. Bỏ qua link chia sẻ, đăng nhập và các đường dẫn bài viết phổ biến. Các nền tảng manual-only giữ chứng cứ backlink; không tự vượt đăng nhập hoặc lấy bài viết cần export thủ công.
+
+Google Dork collector chạy truy vấn `site:<root-domain>` giới hạn PDF, trang liên hệ/tin tức, tài liệu API và Office công khai. Kết quả CSE chỉ chấp nhận URL nằm trong `allowed_domains`; snippet được lưu làm chứng cứ có nguồn Google query URL. Cần `GOOGLE_CSE_API_KEY` và `GOOGLE_CSE_ID` của khách hàng đã có quyền API. Nếu thiếu, collector `skipped` và collection log có các liên kết Google Search để mở thủ công. Xem `verification/GOOGLE_DORK.md` về trạng thái API và giới hạn.
 
 PUT project dùng schema đầy đủ như create; chặn thay scope khi có active run và lưu previous/updated project trong project_history. Lab private cần global ALLOW_PRIVATE_LAB cùng scope allow_private=true; default false.

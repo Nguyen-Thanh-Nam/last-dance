@@ -38,9 +38,9 @@ python -m venv .venv
 .\.venv\Scripts\python.exe scripts/start_dev.py
 ```
 
-Mở http://127.0.0.1:2222, chọn **Thêm domain**, nhập một domain và bấm **Bắt đầu**. Hệ thống tự tạo project/website/phạm vi thu thập, xếp hàng website → DNS → CT → RDAP nếu bật → social → AI, hiển thị tiến độ và cập nhật danh mục/báo cáo. Không cần điền tên tổ chức, JSON, scope hoặc bấm Run collection lần nữa. Tải lại trang sẽ mở project đã chọn và tiếp tục theo dõi job. Gửi lại cùng domain dùng lại project tự tạo, tránh job trùng. Tên project ban đầu là domain, không phải xác nhận danh tính pháp lý của tổ chức.
+Mở http://127.0.0.1:2222, chọn **Thêm domain**, nhập một domain và bấm **Bắt đầu**. Hệ thống tự tạo project/website/phạm vi thu thập, xếp hàng website → DNS → CT → RDAP nếu bật → Google Dork → social → AI, hiển thị tiến độ và cập nhật danh mục/báo cáo. Không cần điền tên tổ chức, JSON, scope hoặc bấm Run collection lần nữa. Tải lại trang sẽ mở project đã chọn và tiếp tục theo dõi job. Gửi lại cùng domain dùng lại project tự tạo, tránh job trùng. Tên project ban đầu là domain, không phải xác nhận danh tính pháp lý của tổ chức.
 
-Social URLs được tìm từ website snapshot trong scope. Chế độ tự động dùng passive và HTTPS; kiểm tra HTTP/TLS chủ động vẫn là tính năng có scope riêng trong cấu hình project. AI dùng provider/model/key đã khai báo trong `.env`; lỗi nguồn/provider được ghi trong Collection logs, dữ liệu các bước khác vẫn được giữ.
+Google Dork tạo các truy vấn giới hạn `site:<domain>` cho tài liệu và trang công khai. Muốn lấy kết quả tự động, cần quyền truy cập Google Custom Search JSON API hiện có và khai báo `GOOGLE_CSE_API_KEY`/`GOOGLE_CSE_ID`; nếu chưa cấu hình, log có các liên kết truy vấn Google để mở thủ công. Social URLs được tìm từ website snapshot trong scope. Chế độ tự động dùng passive và HTTPS; kiểm tra HTTP/TLS chủ động vẫn là tính năng có scope riêng trong cấu hình project. AI dùng provider/model/key đã khai báo trong `.env`; lỗi nguồn/provider được ghi trong Collection logs, dữ liệu các bước khác vẫn được giữ.
 
 **Load demo** dùng rules-demo và dữ liệu giả lập cố định; không gọi Internet hoặc nhà cung cấp AI, kể cả khi đã cấu hình model thật. Không sử dụng demo làm kết quả thực nghiệm nghiên cứu.
 

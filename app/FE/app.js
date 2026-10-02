@@ -60,7 +60,28 @@ function renderSocial() {
 
 function renderCollectorLogs() {
   const logs = state.project.collector_logs || [];
-  $('collectorRows').innerHTML = logs.map(l => `<tr><td>${escapeHtml(l.collector)}</td><td>${badge(l.status === 'ok' ? 'confirmed' : l.status === 'error' ? 'needs_review' : 'discovered')}</td><td>${l.records_count}</td><td>${l.duration_ms} ms</td><td>${escapeHtml(l.message)}</td></tr>`).join('') || '<tr><td colspan="5" class="muted">No collector logs available.</td></tr>';
+  $('collectorRows').innerHTML = logs.map(l => `<tr><td>${escapeHtml(l.collector)}</td><td>${badge(l.status === 'ok' ? 'confirmed' : l.status === 'error' ? 'needs_review' : 'discovered')}</td><td>${l.records_count}</td><td>${l.duration_ms} ms</td><td>${renderCollectorMessage(l)}</td></tr>`).join('') || '<tr><td colspan="5" class="muted">No collector logs available.</td></tr>';
+}
+
+function renderCollectorMessage(log) {
+  const marker = 'GOOGLE_DORK_LINKS:';
+  const markerIndex = log.collector === 'google_dork' ? String(log.message || '').indexOf(marker) : -1;
+  if (markerIndex < 0) return escapeHtml(log.message);
+  const prefix = String(log.message).slice(0, markerIndex).trim();
+  try {
+    const links = JSON.parse(String(log.message).slice(markerIndex + marker.length));
+    const items = links.map(item => {
+      let href = '#';
+      try {
+        const url = new URL(item.url);
+        if (url.origin === 'https://www.google.com' && url.pathname === '/search') href = escapeHtml(url.href);
+      } catch {}
+      return `<li><a href="${href}" target="_blank" rel="noreferrer">${escapeHtml(item.query)}</a></li>`;
+    }).join('');
+    return `${escapeHtml(prefix)}<ul class="dorkLinks">${items}</ul>`;
+  } catch {
+    return escapeHtml(log.message);
+  }
 }
 
 function renderAssets() {
@@ -180,7 +201,7 @@ function renderDashboard() {
   const path=points.map((point,i)=>(i?'L':'M')+point.join(' ')).join(' ');
   const historyGrid=Array.from({length:5},(_,i)=>`<line x1="45" x2="525" y1="${35+i*38.75}" y2="${35+i*38.75}" stroke="#dfe7fa" stroke-dasharray="3 4"/><text x="35" y="${39+i*38.75}" fill="#718ebf" font-size="11" text-anchor="end">${high-i*high/4}</text>`).join('');
   $('historyChart').innerHTML=`<svg viewBox="0 0 550 225" role="img" aria-label="Saved observation count over the last seven UTC days"><defs><linearGradient id="historyFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2d60ff" stop-opacity=".22"/><stop offset="100%" stop-color="#2d60ff" stop-opacity=".02"/></linearGradient></defs>${historyGrid}<path d="${path} L525 190 L45 190 Z" fill="url(#historyFill)"/><path d="${path}" stroke="#1814f3" stroke-width="2.5" fill="none"/>${points.map(([x,y],i)=>`<circle cx="${x}" cy="${y}" r="3" fill="#1814f3"><title>${days[i]}: ${values[i]} observations</title></circle><text x="${x}" y="215" text-anchor="middle" fill="#718ebf" font-size="11">${days[i].slice(5)}</text>`).join('')}</svg>`;
-  $('sourcesRows').innerHTML=p.sources.map(s=>`<tr class="sourceRow" data-source="${s.id}" tabindex="0"><td><strong>${escapeHtml(s.source_name)}</strong><br><small>${escapeHtml(s.source_url)}</small></td><td>${escapeHtml(formatDate(s.collected_at))}</td><td><span class="sourceHash" title="${escapeHtml(s.content_hash)}">${escapeHtml(s.content_hash)}</span></td></tr>`).join('')||'<tr><td colspan="3" class="muted">No saved sources.</td></tr>';
+  $('sourcesRows').innerHTML=p.sources.map(s=>`<tr class="sourceRow" data-source="${s.id}" tabindex="0"><td><strong>${escapeHtml(s.source_name)}</strong><br><a href="${safeUrl(s.source_url)}" target="_blank" rel="noreferrer" onclick="event.stopPropagation()"><small>${escapeHtml(s.source_url)}</small></a></td><td>${escapeHtml(formatDate(s.collected_at))}</td><td><span class="sourceHash" title="${escapeHtml(s.content_hash)}">${escapeHtml(s.content_hash)}</span></td></tr>`).join('')||'<tr><td colspan="3" class="muted">No saved sources.</td></tr>';
   document.querySelectorAll('.sourceRow').forEach(row=>{row.onclick=()=>showSource(row.dataset.source).catch(showError);row.onkeydown=event=>{if(event.key==='Enter')row.click();};});
 }
 

@@ -1,5 +1,5 @@
-........................................................................ [ 71%]
-.............................                                            [100%]
+........................................................................ [ 69%]
+...............................                                          [100%]
 ============================== warnings summary ===============================
 .venv\Lib\site-packages\fastapi\testclient.py:1
   D:\PTITITITI_HCMMMM\DO AN TOT NGHIEP\app\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
@@ -7,4 +7,4 @@
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
 - generated xml file: D:\PTITITITI_HCMMMM\DO AN TOT NGHIEP\app\docs\verification\pytest.xml -
-101 passed, 1 warning in 17.59s
+103 passed, 1 warning in 17.58s

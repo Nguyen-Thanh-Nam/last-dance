@@ -397,7 +397,7 @@ Phần mềm đã có luồng MVP có thể chạy và kiểm thử tái hiện.
 
 ### 15.3. Bằng chứng kiểm tra và cách tái hiện
 
-Lượt kiểm tra cuối sau khi bổ sung setup một domain: **101 test tự động đạt; 63 kiểm tra curl API, 17 kiểm tra curl setup và 55 kiểm tra curl FE/CORS đạt, bao phủ 24 API**. Docker BE bản mới cũng đạt 63 curl checks và cả hai image BE/FE build thành công. Lượt trước sửa giao diện có 71 curl checks trên Windows và Docker. Tổng hợp bằng chứng và giới hạn tại `app/docs/verification/SUMMARY.md`, `FIGMA.md` và `DOMAIN_SETUP.md`.
+Lượt kiểm tra trước khi bổ sung Google Dork: **101 test tự động đạt; 63 kiểm tra curl API, 17 kiểm tra curl setup và 55 kiểm tra curl FE/CORS đạt, bao phủ 24 API**. Docker BE bản mới cũng đạt 63 curl checks và cả hai image BE/FE build thành công. Lượt trước sửa giao diện có 71 curl checks trên Windows và Docker. Bằng chứng kiểm tra hiện tại và giới hạn tại `app/docs/verification/SUMMARY.md`, `FIGMA.md`, `DOMAIN_SETUP.md` và `GOOGLE_DORK.md`.
 
 ```powershell
 Set-Location .\app
@@ -447,7 +447,9 @@ Chi tiết tại `app/docs/verification/FIGMA.md`. Khi FE/BE đang chạy, gọi
 - [x] Form setup một input domain; tự tạo project/website/allowlist và tự khởi chạy collection/AI.
 - [x] Chuẩn hóa domain/IDNA; từ chối input sai; tạo project/job cùng transaction và dùng lại active job khi gửi lại.
 - [x] Tự phát hiện social profiles từ website snapshot có scope, giữ backlink làm chứng cứ.
+- [x] Thêm Google Dork domain-scoped cho trang/tài liệu công khai; hỗ trợ Google CSE với key đã có và link tìm kiếm thủ công khi API không được cấu hình.
 - [x] Tự cập nhật kết quả, nhớ project và tiếp tục theo dõi job sau reload; hiển thị lỗi form/collector/provider.
 - [x] Test regression, curl API và flow setup với fixture, kiểm tra logic FE và cập nhật OpenAPI/hướng dẫn chạy.
+- [x] Google Dork theo allowlist: hỗ trợ Google CSE API hiện có, loại kết quả ngoài scope; fallback link Google Search bấm được khi thiếu quyền API.
 
 Mặc định dùng passive; domain đơn lẻ không tự trở thành xác nhận quyền sở hữu hoặc mở scope chủ động. Các nguồn cần login/key/export và nhận định thiếu chứng cứ vẫn có giới hạn được ghi rõ tại `app/docs/verification/DOMAIN_SETUP.md`. Không dùng fixture thay cho corpus/thực nghiệm thật trong mục 15.4.

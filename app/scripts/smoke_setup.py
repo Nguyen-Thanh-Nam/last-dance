@@ -23,6 +23,7 @@ def main():
             port = probe.getsockname()[1]
         env = {**os.environ, "DATABASE_PATH": str(Path(temporary) / "setup.db"),
                "AI_PROVIDER": "rules-demo", "ENABLE_RDAP": "false", "REQUEST_DELAY_SECONDS": "0",
+               "GOOGLE_CSE_API_KEY": "", "GOOGLE_CSE_ID": "",
                "PYTHONPATH": str(ROOT / "BE"), "PYTHONDONTWRITEBYTECODE": "1"}
         with (Path(temporary) / "server.log").open("w", encoding="utf-8") as log:
             server = subprocess.Popen([sys.executable, "-m", "uvicorn", "setup_smoke_app:app", "--app-dir",
@@ -74,6 +75,8 @@ def main():
                 assert snapshot["assets"] and snapshot["relationships"]
                 assert snapshot["model_runs"][0]["provider"] == "rules-demo"
                 assert snapshot["social_accounts"][0]["verification_status"] == "confirmed"
+                dork_log = next(log for log in run["collectors"] if log["collector"] == "google_dork")
+                assert dork_log["status"] == "skipped" and "GOOGLE_DORK_LINKS:" in dork_log["message"]
                 request("GET", prefix + "/assets")
                 request("GET", prefix + "/relationships")
                 request("GET", prefix + "/social")
@@ -98,7 +101,9 @@ def main():
     report.write_text(json.dumps({"result": "passed", "curl_requests": len(checks),
         "scope": "Isolated fixture server and temporary DB; no external collection or paid AI calls", "checks": checks},
         ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"PASS: {len(checks)} curl checks; domain-only setup, automatic pipeline, social discovery, AI fixture and reports.")
+    summary = f"PASS: {len(checks)} curl checks; domain-only setup, automatic pipeline, Google Dork fallback, social discovery, AI fixture and reports."
+    (ROOT / "docs/verification/domain-setup-curl.txt").write_text(summary + "\n", encoding="utf-8")
+    print(summary)
 
 
 if __name__ == "__main__":

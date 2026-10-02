@@ -1,1 +1,1 @@
-PASS: 17 curl checks; domain-only setup, automatic pipeline, social discovery, AI fixture and reports.
+PASS: 18 curl checks; domain-only setup, automatic pipeline, Google Dork fallback, social discovery, AI fixture and reports.

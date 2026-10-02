@@ -2,13 +2,13 @@
 
 Code MVP đã được tách vào `app/BE/app` và `app/FE`. Bảng đối chiếu yêu cầu, thay đổi và phần chưa đạt nằm trong [PLAN_AUDIT.md](../PLAN_AUDIT.md) và mục 15 của [plan.md](../../../plan.md).
 
-Sau khi bổ sung setup một domain, đã chạy lại 101 test, 63 curl checks cho API, 17 curl checks cho setup thành công trên fixture server và 55 curl checks cho FE/CORS/schema. Chi tiết luồng mới tại [DOMAIN_SETUP.md](DOMAIN_SETUP.md); giao diện và phần chưa kiểm tra trực quan tại [FIGMA.md](FIGMA.md). Lượt trước sửa giao diện có 71 curl checks trên Windows/Docker. Chi tiết dọn thư mục và bản sao cache tại [STRUCTURE.md](STRUCTURE.md).
+Sau khi bổ sung Google Dork, đã chạy 103 test, 63 curl checks cho API, 18 curl requests cho setup thành công trên fixture server, 55 curl checks cho FE/CORS/schema, kiểm tra logic Dork trên FE và build Docker BE. Không gọi Google CSE API thật; xem [GOOGLE_DORK.md](GOOGLE_DORK.md) để biết yêu cầu quyền API và fallback. Chi tiết luồng setup tại [DOMAIN_SETUP.md](DOMAIN_SETUP.md); giao diện và phần chưa kiểm tra trực quan tại [FIGMA.md](FIGMA.md). Lượt trước sửa giao diện có 71 curl checks trên Windows/Docker. Chi tiết cấu trúc tại [STRUCTURE.md](STRUCTURE.md).
 
 | Kiểm tra | Kết quả | Bằng chứng |
 |---|---|---|
-| Unit/integration/regression | 101 passed, 1 deprecation warning của Starlette/httpx | [pytest.txt](pytest.txt), [JUnit](pytest.xml) |
+| Unit/integration/regression | 103 passed, 1 deprecation warning của Starlette/httpx | [pytest.txt](pytest.txt), [JUnit](pytest.xml) |
 | Curl API bản setup một domain, DB tạm | 63 kiểm tra đạt; bao phủ 24 method-route API | [curl-results.json](curl-results.json), [curl.txt](curl.txt) |
-| Curl setup thành công, fixture server | 17 kiểm tra đạt; tự tạo/thu thập/social/AI fixture/báo cáo, reuse và input lỗi | [domain-setup-curl.json](domain-setup-curl.json), [domain-setup-curl.txt](domain-setup-curl.txt) |
+| Curl setup thành công, fixture server | 18 kiểm tra đạt; tự tạo/thu thập/Google Dork fallback/social/AI fixture/báo cáo, reuse và input lỗi | [domain-setup-curl.json](domain-setup-curl.json), [domain-setup-curl.txt](domain-setup-curl.txt) |
 | Curl FE/CORS/schema bản setup một domain | 55 kiểm tra đạt, toàn bộ assets khớp file trên đĩa; không thay đổi project | [figma-frontend-curl.json](figma-frontend-curl.json), [figma-frontend-curl.txt](figma-frontend-curl.txt) |
 | Docker FE BankDash | Build image frontend thành công | [figma-docker-build.txt](figma-docker-build.txt) |
 | Docker BE setup một domain | Build thành công; 63 curl checks đạt, bao phủ 24 API; DB tmpfs, non-root, read-only, cap-drop và no-new-privileges | [domain-docker-build.txt](domain-docker-build.txt), [domain-docker-api.json](domain-docker-api.json), [domain-docker-api.txt](domain-docker-api.txt) |
